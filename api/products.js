@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 export class Products {
     static getAllProducts(page = 1) {
-        return Vue.http.get(`api/part?page=${page}`)
+        return Vue.http.get(`api/parts?page=${page}`)
     }
     static getRandomParts(){
         return Vue.http.get(`api/rand-parts`)
