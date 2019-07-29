@@ -551,6 +551,7 @@
                 items:[],
                 data: {
                     simple1:{
+                        inCanada: true,
                         select: false,
                         value: 5
                     },
@@ -686,14 +687,17 @@
 
                 if(this.payment.paypal && error_boolean){
                     this.toStore('error', 'Wait ...');
+
                     let obj = {
                         data: items,
                         user:{
                             ...this.dataRegister,
                             create_ac: this.crAc,
-                            same_address: this.addressSame
+                            same_address: this.addressSame,
+                            shipping: {}
                         }
                     };
+                    Object.keys(this.data).forEach(item => this.data[item].select && (obj.user.shipping = this.data[item]));
                     this.errorRegister = {};
                     let url_data = `http://cruiser-webstore-back.qbex.io/paypal?result=${base64encode(JSON.stringify(obj))}&amount=${this.getTotalPrice}`;
                     window.location.href = url_data;
