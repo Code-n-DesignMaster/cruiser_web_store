@@ -101,7 +101,9 @@
             },
             saveData(){
                 const token = cookie.parse(document.cookie)['token'];
+                window.$nuxt.$loading.start();
                 Auth.saveUser(this.$store.getters['auth/get_user'],token )
+                    .then(res => window.$nuxt.$loading.finish())
             },
         },
         destroyed() {

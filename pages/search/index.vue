@@ -90,6 +90,7 @@
         },
         methods:{
              async search(){
+                 window.$nuxt.$loading.start();
                  let data;
                  try{
                      data = await Search.getSearchData(this.text);
@@ -97,7 +98,8 @@
                  } catch (e) {
                      data = []
                  }
-                 this.data = data
+                 this.data = data;
+                 window.$nuxt.$loading.finish();
              }
         }
     }

@@ -553,27 +553,27 @@
                     simple1:{
                         inCanada: true,
                         select: false,
-                        value: 5
+                        value: '0.99'
                     },
                     simple2:{
                         select: false,
-                        value:''
+                        value:'0',
                     },
                     simple3:{
                         select: false,
-                        value: ''
+                        value: '0'
                     },
                     simple4:{
                         select: false,
-                        value: ''
+                        value: '0'
                     },
                     simple5:{
                         select: false,
-                        value: ''
+                        value: '0'
                     },
                     simple6:{
                         select: false,
-                        value: ''
+                        value: '0'
                     },
                 },
                 payment:{
@@ -664,7 +664,7 @@
                     obj.count = item.basket.qty;
                     return obj
                 });
-                this.errorRegister = {}
+                this.errorRegister = {};
                 let error = JSON.parse(JSON.stringify(this.errorRegister));
 
                 action.forEach(item => {
@@ -686,8 +686,7 @@
                     !error.phone.errors;
 
                 if(this.payment.paypal && error_boolean){
-                    this.toStore('error', 'Wait ...');
-
+                    window.$nuxt.$loading.start();
                     let obj = {
                         data: items,
                         user:{
@@ -701,6 +700,7 @@
                     this.errorRegister = {};
                     let url_data = `http://cruiser-webstore-back.qbex.io/paypal?result=${base64encode(JSON.stringify(obj))}&amount=${this.getTotalPrice}`;
                     window.location.href = url_data;
+                    // window.$nuxt.$loading.finish();
                 } else {
                     !error_boolean && this.toStore('error', 'You have not entered all the required fields.');
                     !this.payment.paypal && this.toStore('error', 'Only paypal is available');
@@ -792,7 +792,7 @@
                     !error.phone.errors;
 
                 if(error_boolean){
-                    this.toStore('error', 'Wait ...');
+                    window.$nuxt.$loading.start();
                     Products.staticgetCareer(this.dataRegister, this.items)
                         .then(res=> {
                             this.errorRegister = {};
@@ -804,10 +804,9 @@
                                     ...data[index - 1],
                                     ...this.data[item]
                                 };
-
-                                this.data[item].value = data[index - 1].total_price;
-                            })
-
+                                this.data[item].value = data[index - 1] ? data[index - 1].total_price : 0;
+                            });
+                            window.$nuxt.$loading.finish();
                         })
 
                 } else this.errorRegister = error

@@ -9,16 +9,15 @@ export default ({ store }) => {
     const errorInterseptor = (request, next) => {
         return next(response => {
             switch (response.status) {
-                case 404: toStore('error', 'error');
+                case 404: toStore('error', 'Resource no found');
                     return;
-                case 401: toStore('error', 'error');
+                case 401: toStore('error', 'User unauthorized');
                     return;
-                case 403: toStore('error', 'error');
+                case 403: toStore('error', 'Forbidden');
                     return;
-                case 405: toStore('error', 'error');
+                case 405: toStore('error', 'Bad request');
                     return;
-                case 200: toStore('info', 'error');
-                    return;
+                case 200: return;
             }
         });
     };

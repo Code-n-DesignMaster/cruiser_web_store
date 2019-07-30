@@ -51,6 +51,7 @@ export default {
                 'This is a required field'
             ) : error.email;
             let error_boolean = !error.email.errors || !error.password.errors;
+            window.$nuxt.$loading.start();
             if(error_boolean) Auth.authLogin(this.dataLogin)
                 .then(res => {
                     if(res.body.success) {
@@ -64,10 +65,11 @@ export default {
                             data: res.body.data.token
                         });
                         const name = this.$router.history.current.name;
+                        window.$nuxt.$loading.finish();
                         if(name.indexOf('check-out') > -1 || name.indexOf('basket') > -1) {
                             return (window.location.href = `/${name}`)
                         }
-                        this.$router.push(`/account`)
+                        this.$router.push(`/account`);
                     }
                 });
             else {
@@ -126,6 +128,7 @@ export default {
                 ['required'],
                 'This is a required field'
             );
+            window.$nuxt.$loading.start();
             let error_boolean = !error.email.errors ||
                 !error.password.errors ||
                 !error.c_password.errors ||
@@ -133,9 +136,13 @@ export default {
                 !error.last_name.errors;
             error_boolean ?
                 Auth.authRegister(this.dataRegister).then(res => {
-                    res.body.success && (this.storeMessage('info', 'Successfully register user'),this.toLogin())
+                    res.body.success && (
+                        this.storeMessage('info', 'Successfully register user'),
+                        window.$nuxt.$loading.finish(),
+                        this.toLogin()
+                    )
                 }) :
-                this.errorRegister = new Object(error)
+                (this.errorRegister = new Object(error), window.$nuxt.$loading.finish());
         },
         clearData() {
             this.dataLogin = {};
