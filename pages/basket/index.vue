@@ -42,17 +42,24 @@
                         <div class="product-image"></div>
                     </div>
                     <div class="post post-2 product-container">
-                        <div class="item pointer">
+                        <div class="item pointer all-center">
                             {{item.brand_name}}
                         </div>
                     </div>
                     <div class="post post-3 product-container">
-                        <div class="item">
-                            {{item.description_english}}
+                        <div class="item name-container" style="width: 100%">
+                            <div class="name">
+                                <div style="width: 100%">{{item.description_english}}</div>
+                            </div>
+                            <div class="name">Part number :
+                                <span
+                                        style="font-weight: bold; cursor: pointer"
+                                        @click="toProductRouter(item)">{{item.part_number}}</span>
+                            </div>
                         </div>
                     </div>
                     <div class="post post-4 product-container">
-                        <div class="item">${{item.basket.prices}}</div>
+                        <div class="item all-center">${{item.basket.prices}}</div>
                     </div>
                     <div class="post post-5 product-container" >
                         <div class="item item-qty">
@@ -89,9 +96,10 @@
                     <div style="font-weight: bold;font-size: 14px;">Shipping Methods</div>
                     <div style="font-weight: bold;font-size: 10px;">to</div>
                     <dropdown
+                            :height="19"
                             :options="arrayOfObjects"
                             :selected="object"
-                            :updateOption="methodToRunOnSelect">
+                            @updateOption="methodToRunOnSelect($event)">
                     </dropdown>
                     <input style="width: 200px" placeholder="Enter Zip or postal code" class="coupon-enter">
                 </div>
@@ -205,6 +213,7 @@
     import Dropdown from "../../common/Dropdown";
     import {Products} from "../../api/products";
     import * as cookie from "cookie";
+    import {Country} from "../../api/country";
 
     export default {
         fetch({store,req}){
@@ -284,8 +293,11 @@
                         name: 'basket',
                         data: items
                     });
-                    return {afterRequest: items}
+                    return Country.getCountries()
                 })
+                .then(res => store.commit('country/setValue',{
+                    name:'countries', data: res.body.sort((a, b) => a.name_en.localeCompare(b.name_en))
+                }))
                 .catch(res => console.log(res))
         },
 
@@ -296,10 +308,6 @@
             return {
                 BASKET: new Basket(this.$store),
                 items:[],
-                arrayOfObjects: [{name:'2'}, {name:'3'},{name: '4'}],
-                object: {
-                    name: 'Select Country',
-                },
                 simple1:false,
                 simple2:false,
                 simple3:false,
@@ -321,11 +329,19 @@
         computed: {
 
             getTotalPrice() {
-                return this.sum(this.items, true)
+                return this.sum(this.items, true);
             },
 
             getTotalQty(){
-                return this.sum(this.items, false)
+                return this.sum(this.items, false);
+            },
+
+            arrayOfObjects(){
+                return this.$store.getters['country/getAllCountry']
+            },
+
+            object(){
+                return this.$store.getters['country/getCurrent']
             }
 
         },
@@ -383,7 +399,7 @@
             },
 
             methodToRunOnSelect(payload) {
-                this.object = payload;
+                this.$store.commit('country/setValue',{name:'country', data: payload})
             },
 
             deleteThingsInBasket(index) {
@@ -821,6 +837,46 @@
         background-repeat: no-repeat;
         cursor: pointer;
         background-position: center;
+    }
+    .post > div.item {
+        min-height: 50px;
+        font-weight: normal;
+        font-size: 12px;
+    }
+
+    .post > div.item.name-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: calc(100% - 20px);
+    }
+    .post > div.item > .name{
+        width: 170px;
+
+        display: flex;
+        line-height: 15px;
+    }
+    .post > div.item > .name div{
+        /*height: 60px;*/
+        width: 100%;
+        margin-bottom: 5px;
+        word-break: break-all;
+        /*white-space: pre-wrap;*/
+        /*overflow-x: hidden;*/
+        padding-right: 5px;
+        /*text-overflow: ellipsis;*/
+    }
+
+    .post > div.item div{
+        /*min-height: 20px;*/
+    }
+    .key-delete{
+        display: flex;
+
+        justify-content: space-around;
+    }
+    .key-delete .item{
+        min-height: auto!important;
     }
 </style>
 

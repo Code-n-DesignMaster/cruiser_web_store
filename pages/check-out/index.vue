@@ -74,13 +74,11 @@
                                 </div>
                             </div>
                             <div class="personal-data-item">
-                                <label>Street Adress 2<span class="badge-require">*</span></label>
+                                <label>Street Adress 2</label>
                                 <div>
                                     <input
                                         v-model="dataRegister.street_address_two"
                                         placeholder="This is a required field"
-                                        :class="errorRegister.street_address_two &&
-                                            errorRegister.street_address_two.errors && 'input-error'"
                                         @input="setUser($event, dataRegister, 'street_address_two')">
                                 </div>
                             </div>
@@ -123,12 +121,15 @@
                                 <div class="personal-data-item">
                                     <label>Country<span class="badge-require">*</span></label>
                                     <div>
-                                        <input
-                                             v-model="dataRegister.country"
-                                             placeholder="This is a required field"
-                                             :class="errorRegister.country &&
+                                        <dropdown
+                                            :width="150"
+                                            :height="28"
+                                            :options="arrayOfObjects"
+                                            :selected="dataRegister.country"
+                                            :class="errorRegister.country &&
                                             errorRegister.country.errors && 'input-error'"
-                                             @input="setUser($event, dataRegister, 'country')">
+                                            @updateOption="methodToRunOnSelect">
+                                        </dropdown>
                                     </div>
                                 </div>
                             </div>
@@ -202,17 +203,23 @@
                                 <div class="product-image"></div>
                             </div>
                             <div class="post post-2 product-container">
-                                <div class="item pointer">
+                                <div class="item pointer all-center">
                                     {{item.brand_name}}
                                 </div>
                             </div>
                             <div class="post post-3 product-container">
-                                <div class="item">
-                                    {{item.description_english}}
+                                <div class="item name-container" style="width: 100%">
+                                    <div class="name">
+                                        <div style="width: 100%">{{item.description_english}}</div>
+                                    </div>
+                                    <div class="name">Part number :
+                                        <span style="font-weight: bold; cursor: pointer"
+                                              @click="toProductRouter(item)">{{item.part_number}}</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="post post-4 product-container">
-                                <div class="item">${{item.basket.prices}}</div>
+                                <div class="item all-center">${{item.basket.prices}}</div>
                             </div>
                             <div class="post post-5 product-container" >
                                 <div class="item item-qty">
@@ -233,8 +240,8 @@
                     </div>
                     <div class="products-all-header products-all-total">
                         <div style="display: flex">
-                            <div class="post-5" style="border-right: 2px solid white; width: 70px">{{getTotalQty}}pcs</div>
-                            <div class="post-6" style="width: 125px;">${{getTotalPrice.toFixed(2)}}</div>
+                            <div class="post-5" style="border-right: 2px solid white;width: 60px">{{getTotalQty}}pcs</div>
+                            <div class="post-6" style="width: 65px; margin-left:5px">${{getTotalPrice.toFixed(2)}}</div>
                         </div>
                     </div>
                     <div class="coupon-system">
@@ -246,7 +253,7 @@
                     </div>
                     <div class="container-shipping">
                         <div class="shipping">
-                            <div style="font-weight: bold;font-size: 14px;">Shipping Methods</div>
+                            <div style="font-weight: bold;font-size: 14px;">Shipping Methods</div> <div>total weigth: {{total_weight}}</div>
                         </div>
                         <div class="shipping-checkbox table">
                             <div class="postt">
@@ -258,13 +265,14 @@
 
                                 </div>
                                 <div class="date">
-                                    no transportation
+                                    No transportation
                                 </div>
                                 <div class="price">
-                                    ${{data.simple1.value}}
+                                    {{data.simple1.value ? '$' + data.simple1.value : ''}}
                                 </div>
                             </div>
                             <div class="postt">
+                                <div class="close" v-if="!(data.simple2 && data.simple2.service_name)"></div>
                                 <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
                                     <input type="radio" id="simple2" name="fieldset-1" @click="active('simple2')"/>
                                     <label for="simple2"></label>
@@ -272,13 +280,14 @@
                                 <!--<div class="image"></div>-->
                                 <div style="height: 50px;padding: 0 10px;">{{data.simple2 && data.simple2.service_name}}</div>
                                 <div class="date">
-                                    2 days
+                                    {{data.simple2 && data.simple2.max_delivery_date}}
                                 </div>
                                 <div class="price">
-                                    ${{data.simple2.value}}
+                                    {{data.simple2.value ? '$' + data.simple2.value : ''}}
                                 </div>
                             </div>
                             <div class="postt">
+                                <div class="close" v-if="!(data.simple3 && data.simple3.service_name)"></div>
                                 <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
                                     <input type="radio" id="simple3" name="fieldset-1" @click="active('simple3')"/>
                                     <label for="simple3"></label>
@@ -286,13 +295,14 @@
                                 <!--<div class="image"></div>-->
                                 <div style="height: 50px;padding: 0 10px;">{{data.simple3 && data.simple3.service_name}}</div>
                                 <div class="date">
-                                    2 days
+                                    {{data.simple3 && data.simple3.max_delivery_date}}
                                 </div>
                                 <div class="price">
-                                    ${{data.simple3.value}}
+                                    {{data.simple3.value ? '$' + data.simple3.value : ''}}
                                 </div>
                             </div>
                             <div class="postt">
+                                <div class="close" v-if="!(data.simple4 && data.simple4.service_name)"></div>
                                 <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
                                     <input type="radio" id="simple4" name="fieldset-1" @click="active('simple4')"/>
                                     <label for="simple4"></label>
@@ -300,13 +310,14 @@
                                 <!--<div class="image"></div>-->
                                 <div style="height: 50px;padding: 0 10px;">{{data.simple4 && data.simple4.service_name}}</div>
                                 <div class="date" >
-                                    2 days
+                                    {{data.simple4 && data.simple4.max_delivery_date}}
                                 </div>
                                 <div class="price">
-                                    ${{data.simple4.value}}
+                                    {{data.simple4.value ? '$' + data.simple4.value : ''}}
                                 </div>
                             </div>
                             <div class="postt">
+                                <div class="close" v-if="!(data.simple5 && data.simple5.service_name)"></div>
                                 <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
                                     <input type="radio" id="simple5" name="fieldset-1" @click="active('simple5')"/>
                                     <label for="simple5"></label>
@@ -314,13 +325,14 @@
                                 <!--<div class="image"></div>-->
                                 <div style="height: 50px;padding: 0 10px;">{{data.simple5 && data.simple5.service_name}}</div>
                                 <div class="date">
-                                    2 days
+                                    {{data.simple5 && data.simple5.max_delivery_date}}
                                 </div>
                                 <div class="price">
-                                    ${{data.simple5.value}}
+                                    {{data.simple5.value ? '$' + data.simple5.value : ''}}
                                 </div>
                             </div>
                             <div class="postt">
+                                <div class="close" v-if="!(data.simple6 && data.simple6.service_name)"></div>
                                 <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
                                     <input type="radio" id="simple6" name="fieldset-1" @click="active('simple6')"/>
                                     <label for="simple6"></label>
@@ -328,10 +340,10 @@
                                 <!--<div class="image"></div>-->
                                 <div style="height: 50px;padding: 0 10px;">{{data.simple6 && data.simple6.service_name}}</div>
                                 <div class="date">
-                                    2 days
+                                    {{data.simple6 && data.simple6.max_delivery_date}}
                                 </div>
                                 <div class="price">
-                                    ${{data.simple6.value}}
+                                    {{data.simple6.value ? '$' + data.simple6.value : ''}}
                                 </div>
                             </div>
                         </div>
@@ -368,7 +380,8 @@
 
                                 <div class="payment-cards-text">PayPal Express Checkout</div>
                             </div>
-                            <div>
+                            <div style="position: relative">
+                                <div class="close"></div>
                                 <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px" @click="activeOther('visa')">
                                     <input type="checkbox"  name="fieldset-1"
                                            :value="payment.visa"
@@ -437,6 +450,7 @@
     import {Token} from "../../helpers/token";
     import { base64encode } from 'nodejs-base64';
     import Validator from "../../validator/validator";
+    import {Country} from "../../api/country";
 
     const action = [
         'email',
@@ -536,8 +550,11 @@
                         name: 'basket',
                         data: items
                     });
-                    return {afterRequest: items}
+                    return Country.getCountries()
                 })
+                .then(res => store.commit('country/setValue',{
+                    name:'countries', data: res.body.sort((a, b) => a.name_en.localeCompare(b.name_en))
+                }))
                 .catch(res => console.log(res))
         },
         components: {
@@ -590,7 +607,13 @@
         },
 
         created(){
-            this.getItems()
+            let currentCountry = this.$store.getters['country/getCurrent'];
+            this.setUser({
+                target:{
+                    value: currentCountry && currentCountry.code? currentCountry.code : ''
+                }
+             }, this.dataRegister, 'country');
+            this.getItems();
         },
 
         mounted(){
@@ -616,6 +639,17 @@
 
             getTotalQty(){
                 return this.sum(this.items, false)
+            },
+
+            arrayOfObjects(){
+                return this.$store.getters['country/getAllCountry']
+            },
+
+            total_weight(){
+                if(this.items.length == 0) return 0;
+                return JSON.parse(JSON.stringify(this.items))
+                    .map(item => Number(item.weight_physical) * item.basket.qty)
+                    .reduce((a,b) => a + b)
             }
 
         },
@@ -655,8 +689,17 @@
             },
 
             order(){
+
+                if(!Object.keys(this.data).some(item => this.data[item].select))
+                {
+                    return this.toStore('error', 'You don`t select shipping');
+                }
+
                 if(!this.agree) return this.toStore('error', 'You don`t confirm checked');
                 if(!this.payment.paypal && !this.payment.visa) return this.toStore('error', 'You don`t  choice payment');
+
+
+
                 let items = JSON.parse(JSON.stringify(this.items));
                 items = items.map(item => {
                     const obj = {};
@@ -678,7 +721,6 @@
                 let error_boolean = !error.email.errors &&
                     !error.last_name.errors &&
                     !error.street_address.errors &&
-                    !error.street_address_two.errors &&
                     !error.city.errors &&
                     !error.state.errors &&
                     !error.postal_code.errors &&
@@ -696,7 +738,8 @@
                             shipping: {}
                         }
                     };
-                    Object.keys(this.data).forEach(item => this.data[item].select && (obj.user.shipping = this.data[item]));
+                    Object.keys(this.data)
+                        .forEach(item => this.data[item].select && (obj.user.shipping = this.data[item]));
                     this.errorRegister = {};
                     let url_data = `http://cruiser-webstore-back.qbex.io/paypal?result=${base64encode(JSON.stringify(obj))}&amount=${this.getTotalPrice}`;
                     window.location.href = url_data;
@@ -757,7 +800,12 @@
             },
 
             methodToRunOnSelect(payload) {
-                this.object = payload;
+                this.setUser({
+                    target:{
+                        value: payload && payload.code? payload.code : ''
+                    }
+                }, this.dataRegister, 'country');
+                this.$store.commit('country/setValue',{name:'country', data: payload})
             },
 
             deleteThingsInBasket(index) {
@@ -768,6 +816,14 @@
                 });
                 this.items = this.getItems()
             },
+            toProductRouter(data) {
+                data.url = base64encode(JSON.stringify({
+                    brand: data.brand_name,
+                    part_number: data.part_number
+                }));
+                this.$router.push(`/products/${data.url}`)
+            },
+
 
             save(){
 
@@ -780,11 +836,11 @@
                         'This is a required field'
                     );
                 });
+                debugger
 
                 let error_boolean = !error.email.errors &&
                     !error.last_name.errors &&
                     !error.street_address.errors &&
-                    !error.street_address_two.errors &&
                     !error.city.errors &&
                     !error.state.errors &&
                     !error.postal_code.errors&&
@@ -796,7 +852,9 @@
                     Products.staticgetCareer(this.dataRegister, this.items)
                         .then(res=> {
                             this.errorRegister = {};
-                            let data = res.body.rates.sort(() => Math.random() - 0.5).splice(0,5);
+                            let data = res.body.rates
+                                .sort(() => Math.random() - 0.5).splice(0,5)
+                                .sort((a, b) => a.total_price - b.total_price);
 
                             Object.keys(this.data).forEach((item, index) => {
                                 if(index == 0) return;
@@ -865,9 +923,6 @@
 
     .post > div {
         padding: 15px 10px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
     }
     .table-products-items{
         margin-bottom: 1px;
@@ -881,8 +936,36 @@
     }
 
     .post > div.item {
+        min-height: 50px;
         font-weight: normal;
         font-size: 12px;
+    }
+
+    .post > div.item.name-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: calc(100% - 20px);
+    }
+    .post > div.item > .name{
+        width: 170px;
+
+        display: flex;
+        line-height: 15px;
+    }
+    .post > div.item > .name div{
+        /*height: 60px;*/
+        width: 100%;
+        margin-bottom: 5px;
+        word-break: break-all;
+        /*white-space: pre-wrap;*/
+        /*overflow-x: hidden;*/
+        padding-right: 5px;
+        /*text-overflow: ellipsis;*/
+    }
+
+    .post > div.item div{
+        /*min-height: 20px;*/
     }
 
     .post-1 {
@@ -1123,10 +1206,11 @@
         font-weight: normal;
         font-size: 10px;
         line-height: 16px;
-        letter-spacing: -0.07px;
+        letter-spacing: -0.07px;position: relative;
     }
 
     .postt:last-child{
+
         border-right: none;
     }
     .styled-input-single label:before {
@@ -1227,7 +1311,11 @@
     }
     .key-delete{
         display: flex;
+
         justify-content: space-around;
+    }
+    .key-delete .item{
+        min-height: auto!important;
     }
     .icon-delete{
         width: 11px;
@@ -1425,6 +1513,16 @@
     .post-4{
         width: 90px;
         max-width: 90px;
+    }
+    .close{
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        position: absolute;
+        background: white;
+        opacity: 0.6;
+        top: 0;
+        left: 0;
     }
 </style>
 

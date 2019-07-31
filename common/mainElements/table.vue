@@ -98,9 +98,9 @@
                 v-if="(!from && !to) || this.position.indexOf(9) > -1">
                 <div class="w6 warehouse-container item-day quantity" v-for="item in mainData.data">
                     <div class="count">
-                        <div class="count-operation" @click="toggleQty(item, '+')">+</div>
-                        <div class="count-total">{{item.qty}}</div>
                         <div class="count-operation" @click="toggleQty(item, '-')">-</div>
+                        <div class="count-total">{{item.qty}}</div>
+                        <div class="count-operation" @click="toggleQty(item, '+')">+</div>
                     </div>
                     <div class="add-container"
                          :class="{active: item.isBasket}"
