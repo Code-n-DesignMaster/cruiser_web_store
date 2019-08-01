@@ -101,97 +101,97 @@
                             :selected="object"
                             @updateOption="methodToRunOnSelect($event)">
                     </dropdown>
-                    <input style="width: 200px" placeholder="Enter Zip or postal code" class="coupon-enter">
+                    <input style="width: 200px" placeholder="Enter Zip or postal code" @change="save" class="coupon-enter">
                 </div>
                 <div class="shipping-checkbox table">
                     <div class="postt">
                         <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
-                            <input type="radio" id="simple1" name="fieldset-1" v-model="simple1"/>
+                            <input type="radio" id="simple1" name="fieldset-1" @click="active('simple1')"/>
                             <label for="simple1"></label>
                         </div>
                         <div class="image">
 
                         </div>
                         <div class="date">
-                            2 days
+                            No transportation
                         </div>
                         <div class="price">
-                            $32.99
+                            {{data.simple1.value ? '$' + data.simple1.value : ''}}
                         </div>
                     </div>
                     <div class="postt">
+                        <div class="close" v-if="!(data.simple2 && data.simple2.service_name)"></div>
                         <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
-                            <input type="radio" id="simple2" name="fieldset-1" v-model="simple2"/>
+                            <input type="radio" id="simple2" name="fieldset-1" @click="active('simple2')"/>
                             <label for="simple2"></label>
                         </div>
-                        <div class="image">
-
-                        </div>
+                        <!--<div class="image"></div>-->
+                        <div style="height: 50px;padding: 0 10px;">{{data.simple2 && data.simple2.service_name}}</div>
                         <div class="date">
-                            2 days
+                            {{data.simple2 && data.simple2.max_delivery_date}}
                         </div>
                         <div class="price">
-                            $32.99
+                            {{data.simple2.value ? '$' + data.simple2.value : ''}}
                         </div>
                     </div>
                     <div class="postt">
+                        <div class="close" v-if="!(data.simple3 && data.simple3.service_name)"></div>
                         <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
-                            <input type="radio" id="simple3" name="fieldset-1" v-model="simple3"/>
+                            <input type="radio" id="simple3" name="fieldset-1" @click="active('simple3')"/>
                             <label for="simple3"></label>
                         </div>
-                        <div class="image">
-
-                        </div>
+                        <!--<div class="image"></div>-->
+                        <div style="height: 50px;padding: 0 10px;">{{data.simple3 && data.simple3.service_name}}</div>
                         <div class="date">
-                            2 days
+                            {{data.simple3 && data.simple3.max_delivery_date}}
                         </div>
                         <div class="price">
-                            $32.99
+                            {{data.simple3.value ? '$' + data.simple3.value : ''}}
                         </div>
                     </div>
                     <div class="postt">
+                        <div class="close" v-if="!(data.simple4 && data.simple4.service_name)"></div>
                         <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
-                            <input type="radio" id="simple4" name="fieldset-1" v-model="simple4"/>
+                            <input type="radio" id="simple4" name="fieldset-1" @click="active('simple4')"/>
                             <label for="simple4"></label>
                         </div>
-                        <div class="image">
-
-                        </div>
-                        <div class="date">
-                            2 days
+                        <!--<div class="image"></div>-->
+                        <div style="height: 50px;padding: 0 10px;">{{data.simple4 && data.simple4.service_name}}</div>
+                        <div class="date" >
+                            {{data.simple4 && data.simple4.max_delivery_date}}
                         </div>
                         <div class="price">
-                            $32.99
+                            {{data.simple4.value ? '$' + data.simple4.value : ''}}
                         </div>
                     </div>
                     <div class="postt">
+                        <div class="close" v-if="!(data.simple5 && data.simple5.service_name)"></div>
                         <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
-                            <input type="radio" id="simple5" name="fieldset-1" v-model="simple5"/>
+                            <input type="radio" id="simple5" name="fieldset-1" @click="active('simple5')"/>
                             <label for="simple5"></label>
                         </div>
-                        <div class="image">
-
-                        </div>
+                        <!--<div class="image"></div>-->
+                        <div style="height: 50px;padding: 0 10px;">{{data.simple5 && data.simple5.service_name}}</div>
                         <div class="date">
-                            2 days
+                            {{data.simple5 && data.simple5.max_delivery_date}}
                         </div>
                         <div class="price">
-                            $32.99
+                            {{data.simple5.value ? '$' + data.simple5.value : ''}}
                         </div>
                     </div>
                     <div class="postt">
+                        <div class="close" v-if="!(data.simple6 && data.simple6.service_name)"></div>
                         <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
-                            <input type="radio" id="simple6" name="fieldset-1" v-model="simple6"/>
+                            <input type="radio" id="simple6" name="fieldset-1" @click="active('simple6')"/>
                             <label for="simple6"></label>
                         </div>
-                        <div class="image">
-
-                        </div>
+                        <!--<div class="image"></div>-->
+                        <div style="height: 50px;padding: 0 10px;">{{data.simple6 && data.simple6.service_name}}</div>
                         <div class="date">
-                            2 days
+                            {{data.simple6 && data.simple6.max_delivery_date}}
                         </div>
                         <div class="price">
-                            $32.99
+                            {{data.simple6.value ? '$' + data.simple6.value : ''}}
                         </div>
                     </div>
                 </div>
@@ -286,7 +286,7 @@
                             item.basket.warehousesNumber = !item.basket.warehousesNumber ?
                                 1 : item.basket.warehousesNumber[0];
                             !item.basket.warehousesDay && (item.basketwarehousesDay = dataDayFormat(warehouses[1]));
-                        })
+                        });
                         return item
                     });
                     store.dispatch('cookie/action_cookie',{
@@ -308,12 +308,33 @@
             return {
                 BASKET: new Basket(this.$store),
                 items:[],
-                simple1:false,
-                simple2:false,
-                simple3:false,
-                simple4:false,
-                simple5:false,
-                simple6:false,
+                data: {
+                    simple1:{
+                        inCanada: true,
+                        select: false,
+                        value: '0.99'
+                    },
+                    simple2:{
+                        select: false,
+                        value:'0',
+                    },
+                    simple3:{
+                        select: false,
+                        value: '0'
+                    },
+                    simple4:{
+                        select: false,
+                        value: '0'
+                    },
+                    simple5:{
+                        select: false,
+                        value: '0'
+                    },
+                    simple6:{
+                        select: false,
+                        value: '0'
+                    },
+                },
             }
         },
 
@@ -357,7 +378,7 @@
             sum(items, type){
                 if(items.length == 0) return 0;
                 return JSON.parse(JSON.stringify(items))
-                    .map(item => type ? (+item.basket.prices * item.basket.qty ): item.basket.qty)
+                    .map(item => type ? Number(item.basket.prices) * Number(item.basket.qty) : item.basket.qty)
                     .reduce((a,b) => a + b)
             },
 
@@ -410,6 +431,34 @@
                 });
                 this.items = this.getItems()
             },
+            save(e){
+                if(!e.target.value) return;
+                window.$nuxt.$loading.start();
+                Products.staticgetCareer({
+                    country:this.$store.getters['country/getCurrent'].code,
+                    postal_code: e.target.value.replace(/\s/g, ''),
+                    city: 'цук',
+                    first_name: 'цук',
+                    last_name: 'цук',
+                    street_address: 'цк',
+                    phone: '2342323',
+                }, this.items)
+                    .then(res=> {
+                        let data = res.body.rates
+                            .sort(() => Math.random() - 0.5).splice(0,5)
+                            .sort((a, b) => a.total_price - b.total_price);
+
+                        Object.keys(this.data).forEach((item, index) => {
+                            if(index == 0) return;
+                            this.data[item] = {
+                                ...data[index - 1],
+                                ...this.data[item]
+                            };
+                            this.data[item].value = data[index - 1] ? data[index - 1].total_price : 0;
+                        });
+                        window.$nuxt.$loading.finish();
+                    })
+            }
         }
     }
 </script>
@@ -723,6 +772,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        position: relative;
         border-right: 1px solid #D4D7DE;
         width: calc(100% / 6);
         color: #32405B;
@@ -877,6 +927,16 @@
     }
     .key-delete .item{
         min-height: auto!important;
+    }
+    .close{
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        position: absolute;
+        background: white;
+        opacity: 0.6;
+        top: 0;
+        left: 0;
     }
 </style>
 

@@ -78,8 +78,8 @@
         min-width: 160px;
         position: relative;
         display: inline-block;
+        z-index: 10000;
         vertical-align: middle;
-        z-index: 10;
         padding: 0!important;
     }
     .btn-group a:hover {
@@ -112,7 +112,7 @@
         position: absolute;
         /*top: 100%;*/
         /*left: 0;*/
-        z-index: 1000;
+        z-index: 10000;
         width: 100%;
         /*float: left;*/
         min-width: 160px;

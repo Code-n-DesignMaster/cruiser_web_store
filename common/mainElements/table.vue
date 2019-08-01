@@ -2,23 +2,28 @@
     <table>
         <tr v-if="type == 'header'">
             <td :style="{background: background ? background : '#F3F6F8'}"
-                class="w1"
+                class="w1" v-if="(!from && !to) || this.position.indexOf(1) > -1"
             >
                 <div class="w1 nested-text">picture</div>
             </td>
-            <td :style="{background: background ? background : '#F3F6F8'}" class="w2">
+            <td :style="{background: background ? background : '#F3F6F8'}" class="w2"
+                v-if="(!from && !to) || this.position.indexOf(2) > -1">
                 <div class="w2 nested-text">Brand</div>
             </td>
-            <td :style="{background: background ? background : '#F3F6F8'}" class="w3">
+            <td :style="{background: background ? background : '#F3F6F8'}" class="w3"
+                v-if="(!from && !to) || this.position.indexOf(3) > -1">
                 <div class="w3 nested-text">Number</div>
             </td>
-            <td :style="{background: background ? background : '#F3F6F8'}" class="w4">
+            <td :style="{background: background ? background : '#F3F6F8'}" class="w4"
+                v-if="(!from && !to) || this.position.indexOf(4) > -1">
                 <div class="w4 nested-text">Name</div>
             </td>
-            <td :style="{background: background ? background : '#F3F6F8'}" class="w1">
+            <td :style="{background: background ? background : '#F3F6F8'}" class="w1"
+                v-if="(!from && !to) || this.position.indexOf(5) > -1">
                 <div class="w1 nested-text">Weight<span class="normal">(Kg)</span></div>
             </td>
             <td :style="{background: background ? background : '#F3F6F8'}" class="w9"
+                v-if="(!from && !to) || this.position.indexOf(6) > -1"
                 style="display: flex;justify-content: space-between">
                 <div class="w9 nested-text" style="display: flex; justify-content: space-between">
                     Warehouse
@@ -26,13 +31,16 @@
                 </div>
             </td>
             <td :style="{background: background ? background : '#F3F6F8'}"
+                v-if="(!from && !to) || this.position.indexOf(7) > -1"
                 class="w5">
                 <div class="w5 nested-text">departure</div>
             </td>
-            <td :style="{background: background ? background : '#F3F6F8'}" class="w7">
+            <td :style="{background: background ? background : '#F3F6F8'}" class="w7"
+                v-if="(!from && !to) || this.position.indexOf(8) > -1">
                 <div class="w7 nested-text">Price</div>
             </td>
-            <td :style="{background: background ? background : '#F3F6F8'}" class="w6">
+            <td :style="{background: background ? background : '#F3F6F8'}" class="w6"
+                v-if="(!from && !to) || this.position.indexOf(9) > -1">
                 <div class="w6 nested-text">Quantity</div>
             </td>
         </tr>
@@ -106,9 +114,9 @@
                          :class="{active: item.isBasket}"
                          @click="toBasket(item)">
                         <div class="add-basket add-basket-background"></div>
-                        <div class="add-text">add</div>
+                        <div class="add-text">{{item.isBasket ? 'del' : 'add'}}</div>
                     </div>
-                    <div class="add-basket comment"></div>
+                    <!--<div class="add-basket comment"></div>-->
                 </div>
             </td>
         </tr>
@@ -180,7 +188,9 @@
                         const basketContainer = this.BASKET.getThingByIndex(item && item.unique_hashes);
                         item.qty = basketContainer &&
                         basketContainer.basket &&
-                        basketContainer.basket.qty ? basketContainer.basket.qty : item.qty ? item.qty : 0;
+                        basketContainer.basket.qty
+                            ? basketContainer.basket.qty
+                            : item.qty ? item.qty : item.available > 0 ? 1 : 0;
                         return item;
                     }));
                     this.data = product;
@@ -210,7 +220,7 @@
                 if (!data.active)    return this.toStore('error', 'Not available warehouse');
                 if (!data.available) return this.toStore('error', 'Not available parts');
                 if (data.qty == data.available && operation == '+') return this.toStore('error', 'Not available parts');
-                if (data.qty == 0 && operation == '-') return this.toStore('error', 'Qty cannot be less than 0');
+                if (data.qty == 1 && operation == '-') return this.toStore('error', 'Qty cannot be less than 1');
                 let basketContainer = this.BASKET.getThingByIndex(data.unique_hashes);
                 const basketItemIndex = this.getLocalStorageFindIndexThings(data.unique_hashes);
                 data.qty = eval(`${data.qty} ${operation} 1`);

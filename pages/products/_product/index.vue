@@ -4,7 +4,7 @@
             <div class="link">
                 <span>Home</span> /
                 <span>Products</span> /
-                <span class="link-active">NEW OEM TOYOTA LAND CRUISER 80 SERIES OR LEXUS LX450 AIR CLEA</span>
+                <span class="link-active">{{item.description_english}}</span>
             </div>
             <div class="header-container-one-product" style="justify-content: space-between;">
                 <div class="container-photo">
@@ -17,43 +17,50 @@
                     </div>
                 </div>
                 <div class="product-description" style="width: 100%;">
-                    <div>Brand:<span style="font-weight: bold">{{item.brand_name}}</span></div>
-                    <div class="container-description">
-                        <div class="container-description-text">
-                            <div class="name-product">
-                                {{item.description_english}}
-                            </div>
-                            <div class="name-product" style="position: relative">
-                                Part number:<span style="font-weight: bold">{{item.part_number}}</span>
-                                <div class="arrow-superseeded">
-                                    <div class="arrow-image"></div>
-                                    <div class="container-arrow-text">
-                                        Superseeded:
-                                        <div class="arrow-text">1626-21011</div>
-                                    </div>
+                    <div>
+                        <div>Brand: <span style="font-weight: bold">{{item.brand_name}}</span></div>
+                        <div class="container-description">
+                            <div class="container-description-text">
+                                <div class="name-product">
+                                    {{item.description_english}}
+                                </div>
+                                <div class="name-product" style="position: relative">
+                                    Part number:<span style="font-weight: bold">{{item.part_number}}</span>
+                                    <!--<div class="arrow-superseeded">-->
+                                    <!--<div class="arrow-image"></div>-->
+                                    <!--<div class="container-arrow-text">-->
+                                    <!--Superseeded:-->
+                                    <!--<div class="arrow-text">1626-21011</div>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                </div>
+                                <div class="name-product">
+                                    Weight (kg):<span style="font-weight: bold">{{item.weight_physical}}</span>
                                 </div>
                             </div>
-                            <div class="name-product">
-                                Weight (kg):<span style="font-weight: bold">2.35</span>
-                            </div>
                         </div>
+                    </div>
+                    <div class="container-table">
+                        <app-table :type="'header'" :from="5"
+                                   :to="9" :background="'#ECF0F3'"></app-table>
                         <app-table
-                            :from="5"
-                            :to="9"
-                            :item="item">
+                                :from="5"
+                                :to="9"
+                                :item="item">
                         </app-table>
                     </div>
                 </div>
+
             </div>
             <div class="container-about-product">
-                <div class="item-about-product">
-                    <div class="name-item-about-product">
-                        Part fits:
-                    </div>
-                    <div class="description-item-about-product">
-                        Toyota Land Cruiser 40 Series FJ40, FJ43, FJ45 This valve does not work on diesel models
-                    </div>
-                </div>
+                <!--<div class="item-about-product">-->
+                    <!--<div class="name-item-about-product">-->
+                        <!--Part fits:-->
+                    <!--</div>-->
+                    <!--<div class="description-item-about-product">-->
+                        <!--Toyota Land Cruiser 40 Series FJ40, FJ43, FJ45 This valve does not work on diesel models-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="item-about-product">
                     <div class="name-item-about-product">
                         Important General Information:
@@ -68,79 +75,79 @@
                     </div>
                 </div>
             </div>
-            <div class="title-main">
-                Compatibility
-            </div>
-            <table class="COMPATIBILITY">
-                <tr>
-                    <th class="tw1" colspan="3">
-                        <div class="tw1 nested-text">Name</div>
-                    </th>
-                    <th class="tw2" colspan="3">
-                        <div class="tw2 nested-text">Model</div>
-                    </th>
-                    <th class="tw3">
-                        <div class="tw3 nested-text">Description</div>
-                    </th>
-                    <th class="tw4">
-                        <div class="tw4 nested-text">ProdPeriod</div>
-                    </th>
-                    <th class="tw5">
-                        <div class="tw5 nested-text">Options</div>
-                    </th>
-                    <th class="tw6">
-                        <div class="tw6 nested-text">Diagram</div>
-                    </th>
-                </tr>
-                <tr v-for="item in [1,2,3,4]">
-                    <td class="tw1" colspan="3">
-                        <div class="tw1 nested-text container-logo">
-                            <div class="logo"></div>
-                            <div style="font-weight: bold">TOYOTA</div>
-                        </div>
-                    </td>
-                    <td class="tw2" colspan="3">
-                        <div class="tw2 nested-text">ASV50L - CETSKY</div>
-                    </td>
-                    <td class="tw3">
-                        <div class="tw3 nested-text">ASV50</div>
-                    </td>
-                    <td class="tw4">
-                        <div class="tw4 nested-text">04.2015 - 06.2017</div>
-                    </td>
-                    <td class="tw5">
-                        <div class="tw5 nested-text">ATM, MTM: AUTOMATIC TRANSMISSION</div>
-                    </td>
-                    <td class="tw6">
-                        <div class="tw6 nested-text">
-                            <div class="logo logo-diagrams"></div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            <div class="title-main">
-                Superseded and aftermarket
-            </div>
-            <div>
-                <div class="container-table">
-                    <app-table :type="'header'" :background="'#ECF0F3'"></app-table>
-                </div>
-                <div class="title-main-small">
-                    Superseded
-                </div>
-                <div class="container-table">
-                    <app-table :background="'#FBEEE6'"></app-table>
-                </div>
-                <div class="title-main-small">
-                    aftermarket
-                </div>
-                <div class="container-table">
-                    <app-table :background="'#DDEBF6'"></app-table>
-                </div>
-                <div class="container-table">
-                    <app-table :background="'#EAECEE'"></app-table>
-                </div>
-            </div>
+            <!--<div class="title-main">-->
+                <!--Compatibility-->
+            <!--</div>-->
+            <!--<table class="COMPATIBILITY">-->
+                <!--<tr>-->
+                    <!--<th class="tw1" colspan="3">-->
+                        <!--<div class="tw1 nested-text">Name</div>-->
+                    <!--</th>-->
+                    <!--<th class="tw2" colspan="3">-->
+                        <!--<div class="tw2 nested-text">Model</div>-->
+                    <!--</th>-->
+                    <!--<th class="tw3">-->
+                        <!--<div class="tw3 nested-text">Description</div>-->
+                    <!--</th>-->
+                    <!--<th class="tw4">-->
+                        <!--<div class="tw4 nested-text">ProdPeriod</div>-->
+                    <!--</th>-->
+                    <!--<th class="tw5">-->
+                        <!--<div class="tw5 nested-text">Options</div>-->
+                    <!--</th>-->
+                    <!--<th class="tw6">-->
+                        <!--<div class="tw6 nested-text">Diagram</div>-->
+                    <!--</th>-->
+                <!--</tr>-->
+                <!--<tr v-for="item in [1,2,3,4]">-->
+                    <!--<td class="tw1" colspan="3">-->
+                        <!--<div class="tw1 nested-text container-logo">-->
+                            <!--<div class="logo"></div>-->
+                            <!--<div style="font-weight: bold">TOYOTA</div>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td class="tw2" colspan="3">-->
+                        <!--<div class="tw2 nested-text">ASV50L - CETSKY</div>-->
+                    <!--</td>-->
+                    <!--<td class="tw3">-->
+                        <!--<div class="tw3 nested-text">ASV50</div>-->
+                    <!--</td>-->
+                    <!--<td class="tw4">-->
+                        <!--<div class="tw4 nested-text">04.2015 - 06.2017</div>-->
+                    <!--</td>-->
+                    <!--<td class="tw5">-->
+                        <!--<div class="tw5 nested-text">ATM, MTM: AUTOMATIC TRANSMISSION</div>-->
+                    <!--</td>-->
+                    <!--<td class="tw6">-->
+                        <!--<div class="tw6 nested-text">-->
+                            <!--<div class="logo logo-diagrams"></div>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                <!--</tr>-->
+            <!--</table>-->
+            <!--<div class="title-main">-->
+                <!--Superseded and aftermarket-->
+            <!--</div>-->
+            <!--<div>-->
+                <!--<div class="container-table">-->
+                    <!--<app-table :type="'header'" :background="'#ECF0F3'"></app-table>-->
+                <!--</div>-->
+                <!--<div class="title-main-small">-->
+                    <!--Superseded-->
+                <!--</div>-->
+                <!--<div class="container-table">-->
+                    <!--<app-table :background="'#FBEEE6'"></app-table>-->
+                <!--</div>-->
+                <!--<div class="title-main-small">-->
+                    <!--aftermarket-->
+                <!--</div>-->
+                <!--<div class="container-table">-->
+                    <!--<app-table :background="'#DDEBF6'"></app-table>-->
+                <!--</div>-->
+                <!--<div class="container-table">-->
+                    <!--<app-table :background="'#EAECEE'"></app-table>-->
+                <!--</div>-->
+            <!--</div>-->
 
         </div>
         <div class="other-products">
@@ -188,6 +195,7 @@
         },
         async asyncData({route}){
             const {data} = await Search.getSearchItem(JSON.parse(base64decode(route.params.product)));
+            console.log(data);
             return {item: data}
         },
         name: "index",
@@ -265,6 +273,8 @@
         font-style: normal;
         font-weight: normal;
         font-size: 12px;
+        display: flex;
+        justify-content: space-between;
         letter-spacing: -0.06px;
 
         color: #32405B;

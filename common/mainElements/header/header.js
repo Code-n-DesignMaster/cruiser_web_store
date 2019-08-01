@@ -14,16 +14,16 @@ export default {
     data() {
         return {
             menu_page: [
-                {name:'PRODUCTS', path:'products'},
-                {name:'ABOUT US', path:'products'},
-                {name:'Number', path:'products'},
-                {name:'FAQ', path:'products'},
-                {name:'CUSTOMER’S PROJECTS', path:'products'},
-                {name:'POLICIES', path:'products'},
-                {name:'WARRANTY', path:'products'},
-                {name:'NEWS', path:'products'},
-                {name:'CONTACT US', path:'products'},
-                {name:'BRANDS', path:'products'}
+                {name:'PRODUCTS', path:'/products'},
+                {name:'ABOUT US', path:'/products'},
+                {name:'Number', path:'/products'},
+                {name:'FAQ', path:'/products'},
+                {name:'CUSTOMER’S PROJECTS', path:'/products'},
+                {name:'POLICIES', path:'/products'},
+                {name:'WARRANTY', path:'/products'},
+                {name:'NEWS', path:'/products'},
+                {name:'CONTACT US', path:'/products'},
+                {name:'BRANDS', path:'/products'}
             ],
             isMenu: false,
             isBeforeMenu: false,

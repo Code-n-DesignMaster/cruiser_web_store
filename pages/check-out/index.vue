@@ -836,7 +836,6 @@
                         'This is a required field'
                     );
                 });
-                debugger
 
                 let error_boolean = !error.email.errors &&
                     !error.last_name.errors &&
