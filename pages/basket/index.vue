@@ -102,6 +102,7 @@
                             @updateOption="methodToRunOnSelect($event)">
                     </dropdown>
                     <input style="width: 200px" placeholder="Enter Zip or postal code" @change="save" class="coupon-enter">
+                    <div class="button-add-coupon search" @click="search()">Search</div>
                 </div>
                 <div class="shipping-checkbox table">
                     <div class="postt">
@@ -125,10 +126,17 @@
                             <input type="radio" id="simple2" name="fieldset-1" @click="active('simple2')"/>
                             <label for="simple2"></label>
                         </div>
-                        <!--<div class="image"></div>-->
-                        <div style="height: 50px;padding: 0 10px;">{{data.simple2 && data.simple2.service_name}}</div>
+                        <div
+                                class="image"
+                                v-if="data.simple2.url"
+                                :title="data.simple2 && data.simple2.service_name"
+                                :style="{backgroundImage: `url(${data.simple2.url})`}">
+                        </div>
+                        <div style="height: 50px;padding: 0 10px;"  v-if="!data.simple2.url">
+                            {{data.simple2 && data.simple2.service_name}}
+                        </div>
                         <div class="date">
-                            {{data.simple2 && data.simple2.max_delivery_date}}
+                            {{data.simple2 && data.simple2.max_delivery_date | dayFormat}}
                         </div>
                         <div class="price">
                             {{data.simple2.value ? '$' + data.simple2.value : ''}}
@@ -140,10 +148,17 @@
                             <input type="radio" id="simple3" name="fieldset-1" @click="active('simple3')"/>
                             <label for="simple3"></label>
                         </div>
-                        <!--<div class="image"></div>-->
-                        <div style="height: 50px;padding: 0 10px;">{{data.simple3 && data.simple3.service_name}}</div>
+                        <div
+                                class="image"
+                                :title="data.simple3 && data.simple3.service_name"
+                                v-if="data.simple3.url"
+                                :style="{backgroundImage: `url(${data.simple3.url})`}">
+                        </div>
+                        <div style="height: 50px;padding: 0 10px;"  v-if="!data.simple3.url">
+                            {{data.simple3 && data.simple3.service_name}}
+                        </div>
                         <div class="date">
-                            {{data.simple3 && data.simple3.max_delivery_date}}
+                            {{data.simple3 && data.simple3.max_delivery_date | dayFormat}}
                         </div>
                         <div class="price">
                             {{data.simple3.value ? '$' + data.simple3.value : ''}}
@@ -155,10 +170,17 @@
                             <input type="radio" id="simple4" name="fieldset-1" @click="active('simple4')"/>
                             <label for="simple4"></label>
                         </div>
-                        <!--<div class="image"></div>-->
-                        <div style="height: 50px;padding: 0 10px;">{{data.simple4 && data.simple4.service_name}}</div>
-                        <div class="date" >
-                            {{data.simple4 && data.simple4.max_delivery_date}}
+                        <div
+                                class="image"
+                                :title="data.simple4 && data.simple4.service_name"
+                                v-if="data.simple4.url"
+                                :style="{backgroundImage: `url(${data.simple4.url})`}">
+                        </div>
+                        <div style="height: 50px;padding: 0 10px;"  v-if="!data.simple4.url">
+                            {{data.simple4 && data.simple4.service_name}}
+                        </div>
+                        <div class="date">
+                            {{data.simple4 && data.simple4.max_delivery_date | dayFormat}}
                         </div>
                         <div class="price">
                             {{data.simple4.value ? '$' + data.simple4.value : ''}}
@@ -170,10 +192,17 @@
                             <input type="radio" id="simple5" name="fieldset-1" @click="active('simple5')"/>
                             <label for="simple5"></label>
                         </div>
-                        <!--<div class="image"></div>-->
-                        <div style="height: 50px;padding: 0 10px;">{{data.simple5 && data.simple5.service_name}}</div>
+                        <div
+                                class="image"
+                                :title="data.simple5 && data.simple5.service_name"
+                                v-if="data.simple5.url"
+                                :style="{backgroundImage: `url(${data.simple5.url})`}">
+                        </div>
+                        <div style="height: 50px;padding: 0 10px;"  v-if="!data.simple5.url">
+                            {{data.simple5 && data.simple5.service_name}}
+                        </div>
                         <div class="date">
-                            {{data.simple5 && data.simple5.max_delivery_date}}
+                            {{data.simple5 && data.simple5.max_delivery_date | dayFormat}}
                         </div>
                         <div class="price">
                             {{data.simple5.value ? '$' + data.simple5.value : ''}}
@@ -185,22 +214,30 @@
                             <input type="radio" id="simple6" name="fieldset-1" @click="active('simple6')"/>
                             <label for="simple6"></label>
                         </div>
-                        <!--<div class="image"></div>-->
-                        <div style="height: 50px;padding: 0 10px;">{{data.simple6 && data.simple6.service_name}}</div>
+                        <div
+                                class="image"
+                                :title="data.simple6 && data.simple6.service_name"
+                                v-if="data.simple6.url"
+                                :style="{backgroundImage: `url(${data.simple6.url})`}">
+                        </div>
+                        <div style="height: 50px;padding: 0 10px;"  v-if="!data.simple6.url">
+                            {{data.simple6 && data.simple6.service_name}}
+                        </div>
                         <div class="date">
-                            {{data.simple6 && data.simple6.max_delivery_date}}
+                            {{data.simple6 && data.simple6.max_delivery_date | dayFormat}}
                         </div>
                         <div class="price">
                             {{data.simple6.value ? '$' + data.simple6.value : ''}}
                         </div>
                     </div>
+
                 </div>
             </div>
             <div style="background: #DADADA;width: 100%;height: 1px; margin-bottom: 20px"></div>
             <div class="all-total">
                 <div class="total-container">
                     <div class="total">total:<span>${{getTotalPrice.toFixed(2)}}</span></div>
-                    <div class="button-continue-checkout pointer"  @click="$router.push('check-out')">continue to checkout</div>
+                    <div class="button-continue-checkout pointer"  @click="Continue()">continue to checkout</div>
                 </div>
             </div>
         </div>
@@ -214,7 +251,7 @@
     import {Products} from "../../api/products";
     import * as cookie from "cookie";
     import {Country} from "../../api/country";
-
+    import {base64encode} from 'nodejs-base64';
     export default {
         fetch({store,req}){
 
@@ -335,6 +372,7 @@
                         value: '0'
                     },
                 },
+                shippings: this.importAll(require.context('~/assets/shipping/', false, /\.(png|jpg|jpeg)$/))
             }
         },
 
@@ -344,7 +382,7 @@
         },
 
         mounted(){
-            this.BASKET.setAllData(this.$store.getters['cookie/getAllThing'])
+            this.BASKET.setAllData(this.$store.getters['cookie/getAllThing']);
         },
 
         computed: {
@@ -366,6 +404,14 @@
             }
 
         },
+        filters:{
+            dayFormat(value){
+                if(!value) return '';
+                let timeDiff = Math.abs(new Date(value).getTime() - new Date().getTime());
+                let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                return `${diffDays} ${diffDays > 1? 'days' : 'day'}`
+            }
+        },
         methods: {
 
             subtotal(hash){
@@ -375,11 +421,39 @@
                 return  +data.basket.prices * data.basket.qty
             },
 
+            active(flag) {
+                Object.keys(this.data).forEach(item => this.data[item].select = false);
+                this.data[flag].select = true;
+            },
+
+            toProductRouter(data) {
+                data.url = base64encode(JSON.stringify({
+                    brand: data.brand_name,
+                    part_number: data.part_number
+                }));
+                this.$router.push(`/products/${data.url}`)
+            },
+
             sum(items, type){
                 if(items.length == 0) return 0;
                 return JSON.parse(JSON.stringify(items))
                     .map(item => type ? Number(item.basket.prices) * Number(item.basket.qty) : item.basket.qty)
                     .reduce((a,b) => a + b)
+            },
+
+            importAll(r) {
+                let arr = [];
+                r.keys().forEach((key) => arr.push({url: r(key), key: key}));
+                return arr;
+            },
+
+            Continue(){
+                localStorage.setItem('data', JSON.stringify({
+                    data:this.data,
+                    postal_code:this.postal_code,
+                    country:this.$store.getters['country/getCurrent']
+                }));
+                this.$router.push('check-out')
             },
 
             toggleQty(data, operation) {
@@ -433,10 +507,13 @@
             },
             save(e){
                 if(!e.target.value) return;
+                this.postal_code = e.target.value;
+            },
+            search(){
                 window.$nuxt.$loading.start();
                 Products.staticgetCareer({
                     country:this.$store.getters['country/getCurrent'].code,
-                    postal_code: e.target.value.replace(/\s/g, ''),
+                    postal_code: this.postal_code,
                     city: 'цук',
                     first_name: 'цук',
                     last_name: 'цук',
@@ -447,15 +524,27 @@
                         let data = res.body.rates
                             .sort(() => Math.random() - 0.5).splice(0,5)
                             .sort((a, b) => a.total_price - b.total_price);
-
+                        const actionData = ['currency', 'min_delivery_date', 'max_delivery_date', 'service_code', 'service_name', 'url', 'total_price']
                         Object.keys(this.data).forEach((item, index) => {
                             if(index == 0) return;
+                            actionData.forEach(act => this.data[item][act] && delete this.data[item][act]);
                             this.data[item] = {
-                                ...data[index - 1],
+                                ...(data[index - 1] || {}),
                                 ...this.data[item]
                             };
                             this.data[item].value = data[index - 1] ? data[index - 1].total_price : 0;
+                            this.data[item].select = false;
+                            this.shippings.forEach(img => {
+                                if(data[index - 1]) {
+                                    let arr = data[index - 1].service_name.split(' ');
+                                    img.key.indexOf(arr[0].toLowerCase()) > -1 && (this.data[item].url = img.url)
+                                }
+                            });
                         });
+                        window.$nuxt.$loading.finish();
+                    })
+                    .catch(() => {
+                        this.toStore('error', 'Invalid Data');
                         window.$nuxt.$loading.finish();
                     })
             }
@@ -795,7 +884,7 @@
         background-image: url("./../../assets/gruz.png");
         background-position: center;
         background-repeat: no-repeat;
-        background-size: contain;
+        background-size: auto;
         margin-bottom: 10px;
     }
     .postt .date{
@@ -937,6 +1026,11 @@
         opacity: 0.6;
         top: 0;
         left: 0;
+    }
+    .search{
+        width: 62px;
+        padding: 5px 14px!important;
+        cursor: pointer;
     }
 </style>
 

@@ -25,7 +25,7 @@
                                     {{item.description_english}}
                                 </div>
                                 <div class="name-product" style="position: relative">
-                                    Part number:<span style="font-weight: bold">{{item.part_number}}</span>
+                                    Part number: <span style="font-weight: bold">{{item.part_number}}</span>
                                     <!--<div class="arrow-superseeded">-->
                                     <!--<div class="arrow-image"></div>-->
                                     <!--<div class="container-arrow-text">-->
@@ -155,10 +155,13 @@
                 <div class="title-main-small">
                     Customers also bought:
                 </div>
-                <carousel
-                    :interval="10000"
-                    :data="set_data">
-                </carousel>
+                <div>
+                    <carousel
+                            @change="refreshEvent"
+                            :interval="10000"
+                            :data="setData">
+                    </carousel>
+                </div>
             </div>
         </div>
     </div>
@@ -170,6 +173,8 @@
     import { base64encode, base64decode } from 'nodejs-base64';
     import {CookieHelper} from "../../../helpers/cookie";
     import {Auth} from "../../../api/auth";
+    import {Products} from "../../../api/products";
+    import {Basket} from "../../../helpers/basket";
     export default {
         fetch({store,req}){
             const isHeader = req && req.headers && req.headers.cookie;
@@ -195,35 +200,173 @@
         },
         async asyncData({route}){
             const {data} = await Search.getSearchItem(JSON.parse(base64decode(route.params.product)));
-            console.log(data);
-            return {item: data}
+            const getRandom = await Products.getRandomParts().then(res => ({items: res.body}));
+            return {item: data, items: getRandom.items || []}
         },
         name: "index",
         components: {
             'app-table': table,
         },
+        data(){
+            return {
+                set_Data: [],
+                BASKET: new Basket(this.$store),
+                allProducts:[],
+            }
+        },
+        created(){
+            this.allProducts = this.getProducts();
+            this.setData = []
+        },
+        mounted(){
+             this.addClick()
+        },
         computed:{
-            set_data(){
-                return [1,2,3,4].map(() => {
-                    return  `<div class="container-carousel" style="background: #ECF0F3;">
-                                   <div class="test-card" v-for="ite in [1,2,3,4]">
+            setData:{
+                set(){
+                    this.set_Data = [];
+                    this.set_Data = [1,2,3].map(count => {
+                        switch (count) {
+                            case 1: const data1 = this.setHtmlCard(0);
+                                return `<div class="containerCard containerCard-small">${data1}</div>`;
+                            case 2: const data2 = this.setHtmlCard(3);
+                                return `<div class="containerCard containerCard-small">${data2}</div>`;
+                            case 3: const data3 = this.setHtmlCard(7);
+                                return `<div class="containerCard containerCard-small">${data3}</div>`;
+                        }
+                    });
+                    try {
+                        this.refreshEvent()
+                    } catch (e){
+
+                    }
+
+                },
+                get(){
+                    return this.set_Data
+                }
+            }
+        },
+
+        methods:{
+            setHtmlCard(count){
+                return [...this.items].splice(count,4).map((item, index) => {
+                    let data = {...item};
+                    console.log(this.allProducts.indexOf(data.unique_hash) > -1)
+                    return  `<div class="container-carousel container-carousel-small" style="background: #ECF0F3;">
+                                   <div class="test-card">
                                           <div class="picture-description">
                                                 <div class="picture"></div>
                                                 <div class="description">
-                                                    OEM Toyota Land Cruiser
-                                                    40 Series FJ40 Rear Body Reflector Set of 2
+                                                     ${data.description_english}
                                                 </div>
                                           </div>
                                           <app-star :count="3"></app-star>
                                           <hr>
+                                          <div class="disabledHash" id="customId${index}">${data.unique_hash}</div>
                                           <div class="total-add">
-                                               <div class="card-price"><span>$</span>234</div>
-                                               <div class="add-cart">ADD TO CART</div>
+                                               <div class="card-price"><span>$</span>${data.price}</div>
+                                               <div class="add-cart all-center
+                                    ${this.allProducts.indexOf(data.unique_hash) > -1 ? 'active': ''}">
+                                                    ADD TO CART
+                                                </div>
                                           </div>
                                    </div>
                             </div>`
-                })
-            }
+                        }).join(' ')
+            },
+            refreshEvent(){
+                this.removeClick();
+                setTimeout(() => {
+                    this.addClick();
+                },1000)
+            },
+            addCard(event){
+                let currentCard = this.items
+                    .find(data => data.unique_hash === event.target.parentNode.previousElementSibling.textContent);
+                if(currentCard){
+
+                    if (this.allProducts.indexOf(currentCard.unique_hash) > -1)  {
+                        const index = this.getLocalStorageFindIndexThings(currentCard.unique_hash);
+                        const activeRemove = index > -1;
+                        activeRemove && this.BASKET.deleteThing(index);
+                        this.allProducts = this.getProducts();
+                        this.setData = [];
+                        if(activeRemove) return this.toStore('info', 'Successfully removed from the basket');
+                    }
+                    const regex = /\d+/g;
+                    const warehouses = currentCard.warehouse ? currentCard.warehouse.split(' ') : [];
+                    currentCard.basket = {
+                        active: true,
+                        available: currentCard.qty,
+                        qty: 1,
+                        prices: currentCard.price,
+                        unique_hashes: currentCard.unique_hash,
+                    };
+
+                    if(!currentCard.basket.warehousesNumber) {
+                        currentCard.basket.warehousesNumber = warehouses[0] && warehouses[0].match(regex);
+                        currentCard.basket.warehousesNumber = !currentCard.basket.warehousesNumber ? 1
+                            : currentCard.basket.warehousesNumber[0];
+                    }
+                    !currentCard.basket.warehousesDay &&
+                    (currentCard.basket.warehousesDay = this.dataDayFormat(warehouses[1]));
+
+                    if (!currentCard.basket.active)    return this.toStore('error', 'Not available warehouse');
+                    if (!currentCard.basket.available) return this.toStore('error', 'Not available parts');
+                    if (currentCard.basket.qty < 1) return this.toStore('error', 'Not available parts');
+                    currentCard.url = base64encode(JSON.stringify({
+                        brand: currentCard.brand_name,
+                        part_number: currentCard.part_number
+                    }));
+                    const action = ['categories', 'color', 'created_at',
+                        'description_full', 'image', 'is_bundle',
+                        'is_stock_ca', 'location', 'max_price',
+                        'min_price', 'min_stock', 'modified_by',
+                        'notes', 'part_fits', 'part_number_without_too_much',
+                        'subst_for', 'tags', 'updated_at',
+                        'id', 'qty', 'weight_volumetric', 'warehouse'];
+                    action.forEach(item => currentCard.hasOwnProperty(item) && delete currentCard[item]);
+                    this.BASKET.addThing(currentCard);
+                    this.toStore('info', 'Successfully added to basket');
+                    this.allProducts = this.getProducts();
+                    this.setData = [];
+                }
+
+            },
+            dataDayFormat(data) {
+                if(!data) return '';
+                const statics = data;
+                const regex = /\d+/g;
+                data && (data = data.match(regex));
+                data && (data = data[data.length - 1]);
+                if (data && data.indexOf(1) > -1) return `${statics} day`;
+                return `${statics} days`;
+            },
+            getProducts(){
+                return (this.BASKET.getAllThing() || [])
+                    .map(item => item && item.basket && item.basket.unique_hashes)
+                    .filter(item => item)
+            },
+            addClick(){
+                document
+                    .querySelectorAll('.add-cart')
+                    .forEach(item => item.addEventListener('click',this.addCard));
+            },
+            toStore(type, mes) {
+                this.$store.commit('error/setValue', {
+                    name: 'data',
+                    data: {type: type, text: mes, active: true}
+                });
+            },
+            removeClick(){
+                document
+                    .querySelectorAll('.add-cart')
+                    .forEach(item => item.removeEventListener('click',this.addCard));
+            },
+            getLocalStorageFindIndexThings (id) {
+                return this.BASKET.getIndexThing(id)
+            },
         }
     }
 </script>

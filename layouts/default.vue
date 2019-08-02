@@ -299,7 +299,8 @@
         background: #586A8C;
     }
 
-    .container-carousel .test-card  .total-add  .add-cart:active {
+    .container-carousel .test-card  .total-add  .add-cart:active,
+    .container-carousel .test-card  .total-add  .add-cart.active {
         background: #CA4635;
     }
     .container-carousel .test-card  .total-add  .card-price span{
@@ -533,9 +534,17 @@
         width: 100%;
         padding: 0 20px;
         display: flex;
-        background: white;
+        background:white;
     }
+    .containerCard-small{
+        background:#ecf0f3
+    }
+    .container-carousel-small{
 
+        width: calc(100% / 4.3);
+        margin-right: 20px;
+
+    }
     .styled-input-single {
         position: relative;
         padding: 0 0 7px 25px;

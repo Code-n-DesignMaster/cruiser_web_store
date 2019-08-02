@@ -18,14 +18,25 @@ export class Basket {
         } catch (e){
             return null;
         }
-        const data = cookie.parse(DOC && DOC.cookie || '')['basket-data'];
-        return JSON.parse(data == 'undefined' ? '[]' : data || '[]')
+        const data = cookie.parse(DOC && DOC.cookie || '');
+        let arr = [];
+        Object.keys(data).forEach(item => item.indexOf('basket') > -1 && arr.push(JSON.parse(data[item])))
+        return arr;
     }
 
     deleteThing(index){
         let all_data = this.getAllThing();
-        all_data.splice(index, 1);
-        return this.setAllData(all_data)
+        // all_data.splice(index, 1);
+        all_data.forEach((item, ind) => {
+            if(index == ind) {
+                let date = new Date(Date.now() - 86400e3);
+                date = date.toUTCString();
+                return document.cookie = cookie.serialize(`basket${ind}`, JSON.stringify(item), {
+                    maxAge:0
+                })
+            }
+            document.cookie = cookie.serialize(`basket${ind}`, JSON.stringify(item))
+        })
     }
 
     getIndexThing(id){
@@ -42,7 +53,7 @@ export class Basket {
     }
 
     setAllData(all_data){
-        document.cookie = cookie.serialize('basket-data', JSON.stringify(all_data));
+        all_data.forEach((item, index) => document.cookie = cookie.serialize(`basket${index}`, JSON.stringify(item)) )
     }
 
     getThingByIndex(id){

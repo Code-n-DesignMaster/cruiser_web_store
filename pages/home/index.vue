@@ -15,6 +15,7 @@
         <div class="container-cards">
             <div>
                 <carousel
+                        @change="refreshEvent"
                     :interval="10000"
                     :data="setData">
                 </carousel>
@@ -76,12 +77,17 @@
                         switch (count) {
                             case 1: const data1 = this.setHtmlCard(0);
                                 return `<div class="containerCard">${data1}</div>`;
-                            case 2: const data2 = this.setHtmlCard(0);
+                            case 2: const data2 = this.setHtmlCard(3);
                                 return `<div class="containerCard">${data2}</div>`;
-                            case 3: const data3 = this.setHtmlCard(0);
+                            case 3: const data3 = this.setHtmlCard(7);
                                 return `<div class="containerCard">${data3}</div>`;
                         }
                     });
+                    try {
+                        this.refreshEvent()
+                    }catch (e) {
+
+                    }
 
                 },
                 get(){
@@ -89,16 +95,7 @@
                 }
             }
         },
-        watch:{
-            'setData'(v){
-                setTimeout(() => {
-                    try {
-                        this.removeClick();
-                        this.addClick();
-                    } catch (e){}
-                },0)
-            }
-        },
+
         data(){
             return{
                 tabCards: [
@@ -194,6 +191,12 @@
                     this.addClick();
                     this[type] = index;
                 })
+            },
+            refreshEvent(){
+                this.removeClick();
+                setTimeout(() => {
+                    this.addClick();
+                },1000)
             },
             getRandomParts(){
                 return Products.getRandomParts().then(res => this.items = res.body)

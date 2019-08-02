@@ -1,4 +1,4 @@
 import Vue from 'vue';
-import VueCarousel from '@chenfengyuan/vue-carousel';
+import VueCarousel from './../components/carousel.vue';
 
-Vue.use(VueCarousel);
+Vue.component('carousel', VueCarousel);
