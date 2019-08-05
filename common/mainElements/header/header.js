@@ -10,7 +10,7 @@ export default {
         basket: basket,
         "app-auth-popub": authPopub,
     },
-    props: ['isBasketOpen'],
+    props: ['isBasketOpen', 'isAuthOpen'],
     data() {
         return {
             menu_page: [
@@ -73,7 +73,7 @@ export default {
                 name: 'searchText',
                 data: this.searchText
             });
-            this.$router.history.current.name !== 'search' && this.$router.push(`/search?search=${this.searchText}`)
+            this.$router.history.current.name !== 'search' && this.$router.push(`/search?search=${this.searchText}`);
         },
 
         getCountBasket() {
@@ -86,7 +86,14 @@ export default {
         },
 
         closeSmall (event){
-            this.openPopub = 1;
+            this.$emit('getActiveAuth', false)
+        },
+
+        openSmall(){
+            this.$emit('getActiveAuth', !this.isAuthOpen);
+            this.isMenu = false;
         }
+
     }
+
 }

@@ -1299,6 +1299,10 @@
         margin-right: 20px;
     }
 
+    .coupon-enter::placeholder{
+        font-size: 12px;
+        color: #BABABA;
+    }
     .button-add-coupon {
         background: #32405B;
         padding: 10px 30px;

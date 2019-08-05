@@ -2,15 +2,18 @@
     <div>
         <div class="basket-background"
              v-if="isBasketOpen"
-             @click="isBasketOpen ? isBasketOpen = !isBasketOpen : null">
+             @click="open">
         </div>
         <app-toast></app-toast>
         <app-header
             @getActiveBasket="getActiveBasket($event)"
-            :isBasketOpen="isBasketOpen">
+            @getActiveAuth="getActiveAuth($event)"
+            :isBasketOpen="isBasketOpen"
+            :isAuthOpen="isAuthOpen"
+        >
         </app-header>
 
-        <main @click="isBasketOpen ? isBasketOpen = !isBasketOpen : null">
+        <main @click="open">
             <nuxt/>
         </main>
         <app-footer></app-footer>
@@ -37,7 +40,8 @@
         },
         data(){
             return{
-                isBasketOpen:false
+                isBasketOpen:false,
+                isAuthOpen:false,
             }
         },
         computed:{
@@ -49,6 +53,13 @@
         methods: {
             getActiveBasket(event){
                 this.isBasketOpen = event
+            },
+            getActiveAuth(event){
+                this.isAuthOpen = event
+            },
+            open(e){
+                this.isBasketOpen ? this.isBasketOpen = !this.isBasketOpen : null
+                this.isAuthOpen ? this.isAuthOpen = !this.isAuthOpen : null
             }
         },
 

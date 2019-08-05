@@ -2,11 +2,22 @@ export default {
     components: {},
     props: ['count'],
     data() {
-        return {}
+        return {
+            dataCount: 0
+        }
     },
-    computed: {},
+    created() {
+        this.dataCount = typeof this.count == 'undefined' ? 0 : this.count
+    },
     mounted() {
 
     },
-    methods: {}
+    methods: {
+        change(item, operator){
+            this.dataCount = eval(`${this.dataCount} ${operator} ${operator == '-' ?this.dataCount - item : item}`)
+        },
+        getCount(){
+            return this.dataCount;
+        }
+    }
 }

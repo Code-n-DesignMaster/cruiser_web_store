@@ -1,5 +1,10 @@
 <div class="star">
-    <div v-for="item in count"></div>
-    <div class="empty" v-for="item in 5 - count"></div>
+    <div v-for="item in dataCount"
+         @click="change(item, '-')"
+         style="cursor: pointer"></div>
+    <div class="empty"
+         v-for="item in 5 - dataCount"
+         @click="change(item, '+')"
+         style="cursor: pointer"></div>
 </div>
 

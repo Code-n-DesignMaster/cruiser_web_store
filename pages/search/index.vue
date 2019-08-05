@@ -58,7 +58,7 @@
              let data;
              query && query.search && store.commit('search/setValue', {
                  name: 'searchText',
-                 data: query && query.search
+                 data: query.search
              });
              try{
                  data = await Search.getSearchData(query && query.search);
@@ -66,7 +66,7 @@
              } catch (e) {
                 data = []
              }
-             return {data:data}
+             return { data: data }
         },
         components: {
             'app-left-aside': leftAside,
@@ -178,6 +178,8 @@
 
     .result-table-main-result {
         margin-top: 2px;
+        display: flex;
+        flex-direction: column;
     }
 
     .result-table-main-result > div:first-child {

@@ -34,11 +34,11 @@
             </basket>
         </div>
         <div class="menu-other profile-menu pointer"
-             @click="(openPopub = !openPopub,isMenu = false)">
+             @click.self="openSmall()">
             <app-auth-popub
                 id="popub-auth"
-                :class="openPopub && 'active'"
-                :openPopub="openPopub"
+                :class="isAuthOpen && 'active'"
+                :openPopub="isAuthOpen"
                 @closeSmallPopub="closeSmall($event)">
             </app-auth-popub>
         </div>
