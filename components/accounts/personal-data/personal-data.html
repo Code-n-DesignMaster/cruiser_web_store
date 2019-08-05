@@ -8,12 +8,20 @@
                    placeholder="This is a required field">
         </div>
         <div>
+            <label>Email:</label>
+            <input type="text"
+                   :value="newData.email"
+                   placeholder="This is a required field"
+                   @input="setUser($event, newData, 'email')" >
+        </div>
+        <div>
             <label>Street:</label>
             <input type="text"
                    :value="newData.street_address"
                    placeholder="This is a required field"
                    @input="setUser($event, newData, 'street_address')" >
         </div>
+
         <div>
             <label>City:</label>
             <input type="text"
@@ -36,6 +44,13 @@
                    type="text"
                    placeholder="This is a required field"
                    @input="setUser($event, newData, 'last_name')">
+        </div>
+        <div>
+            <label>Email:</label>
+            <input type="text"
+                   :value="newData.postal_code"
+                   placeholder="This is a required field"
+                   @input="setUser($event, newData, 'postal_code')" >
         </div>
         <div>
             <label>Street 2:</label>

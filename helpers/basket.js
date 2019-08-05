@@ -29,8 +29,6 @@ export class Basket {
         // all_data.splice(index, 1);
         all_data.forEach((item, ind) => {
             if(index == ind) {
-                let date = new Date(Date.now() - 86400e3);
-                date = date.toUTCString();
                 return document.cookie = cookie.serialize(`basket${ind}`, JSON.stringify(item), {
                     maxAge:0
                 })
@@ -67,5 +65,16 @@ export class Basket {
         data && data[index] ? data.splice(index, 1, item) : null;
         this.setAllData(data)
     }
+
+    deleteAllThing(){
+        let all_data = this.getAllThing();
+        // all_data.splice(index, 1);
+        all_data.forEach((item, ind) => {
+            return document.cookie = cookie.serialize(`basket${ind}`, JSON.stringify(item), {
+                maxAge:0
+            })
+        })
+    }
+
 
 }
