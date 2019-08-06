@@ -1,17 +1,130 @@
-
 <ul class="tab-component">
     <li v-for="(item, index) in items"
         @click="activeTab(index)">
         <div class="close" :class="item.active ? 'true' : ''">
-            <div class="title">Feb 14, 2019 Order: 0124</div>
+            <div class="title">{{new Date(item.created_at)}} Order: {{item.id}}</div>
             <div class="total-accord">
                 <div>Total: <span style="font-weight: bold">$390.25</span></div>
                 <div style="margin-left: 30px">Status: <span class="badge red">SHIPPED</span></div>
             </div>
         </div>
         <div class="active" :class="item.active ? 'true' : ''">
-            <div>Information about order:</div>
-            <div>Order List:</div>
+            <!--<div>Information about order:</div>-->
+            <!--<table class="COMPATIBILITY">-->
+                <!--<tr>-->
+                    <!--<th class="tw1" colspan="3">-->
+                        <!--<div class="tw1 nested-text">Name</div>-->
+                    <!--</th>-->
+                    <!--<th class="tw2" colspan="3">-->
+                        <!--<div class="tw2 nested-text">Model</div>-->
+                    <!--</th>-->
+                    <!--<th class="tw3">-->
+                        <!--<div class="tw3 nested-text">Description</div>-->
+                    <!--</th>-->
+                    <!--<th class="tw4">-->
+                        <!--<div class="tw4 nested-text">ProdPeriod</div>-->
+                    <!--</th>-->
+                    <!--<th class="tw5">-->
+                        <!--<div class="tw5 nested-text">Options</div>-->
+                    <!--</th>-->
+                    <!--<th class="tw6">-->
+                        <!--<div class="tw6 nested-text">Diagram</div>-->
+                    <!--</th>-->
+                <!--</tr>-->
+                <!--<tr v-for="item in [1,2,3,4]">-->
+                    <!--<td class="tw1" colspan="3">-->
+                        <!--<div class="tw1 nested-text container-logo">-->
+                            <!--<div class="logo"></div>-->
+                            <!--<div style="font-weight: bold">TOYOTA</div>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td class="tw2" colspan="3">-->
+                        <!--<div class="tw2 nested-text">ASV50L - CETSKY</div>-->
+                    <!--</td>-->
+                    <!--<td class="tw3">-->
+                        <!--<div class="tw3 nested-text">ASV50</div>-->
+                    <!--</td>-->
+                    <!--<td class="tw4">-->
+                        <!--<div class="tw4 nested-text">04.2015 - 06.2017</div>-->
+                    <!--</td>-->
+                    <!--<td class="tw5">-->
+                        <!--<div class="tw5 nested-text">ATM, MTM: AUTOMATIC TRANSMISSION</div>-->
+                    <!--</td>-->
+                    <!--<td class="tw6">-->
+                        <!--<div class="tw6 nested-text">-->
+                            <!--<div class="logo logo-diagrams"></div>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                <!--</tr>-->
+            <!--</table>-->
+            <div class="title">Order List:</div>
+            <table class="COMPATIBILITY">
+                <tr>
+                    <th class="tw1o" colspan="3">
+                        <div class="tw1o padding nested-text">BRAND</div>
+                    </th>
+                    <th class="tw2o" colspan="3">
+                        <div class="tw2o padding nested-text">NAME</div>
+                    </th>
+                    <th class="tw3o">
+                        <div class="tw3o padding nested-text">NUMBER</div>
+                    </th>
+                    <th class="tw4o">
+                        <div class="tw4o padding nested-text">DATE</div>
+                    </th>
+                    <th class="tw5o">
+                        <div class="tw5o padding nested-text">QTY</div>
+                    </th>
+                    <th class="tw6o">
+                        <div class="tw6o padding nested-text">QTY RCV</div>
+                    </th>
+                    <th class="tw7o">
+                        <div class="tw7o padding nested-text">COST</div>
+                    </th>
+                    <th class="tw8o">
+                        <div class="tw8o padding nested-text">TOTAL</div>
+                    </th>
+                </tr>
+
+                <tr v-for="order in item.order.data">
+                    <td class="tw1o" colspan="3">
+                        <div class="tw1o padding nested-text container-logo">
+                            <div class="logo"></div>
+                            <div style="font-weight: bold">{{order.brand_name}}</div>
+                        </div>
+                    </td>
+                    <td class="tw2o" colspan="3">
+                        <div class="tw2o padding nested-text">{{order.description_english}}</div>
+                    </td>
+                    <td class="tw3o">
+                        <div class="tw3o padding nested-text">{{order.part_number}}</div>
+                    </td>
+                    <td class="tw4o">
+                        <div class="tw4o padding nested-text">{{date(item.created_at)}} </div>
+                    </td>
+                    <td class="tw5o">
+                        <div class="tw5o padding nested-text">{{order.count}}</div>
+                    </td>
+                    <td class="tw6o">
+                        <div class="tw6o padding nested-text">
+                            {{order.count}}
+                        </div>
+                    </td>
+                    <td class="tw7o">
+                        <div class="tw7o padding nested-text" style="font-weight: bold">
+                            ${{order.price}}
+                        </div>
+                    </td>
+                    <td class="tw8o">
+                        <div class="tw8o padding nested-text" style="font-weight: bold">
+                            ${{Number(order.count) * Number(order.price)}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="total">{{total(item)}}</td>
+                </tr>
+            </table>
         </div>
     </li>
 </ul>

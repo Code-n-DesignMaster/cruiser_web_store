@@ -21,7 +21,6 @@ export default {
         getThings() {
             this.total = 0;
             this.data = this.getLocalStorageThings() || [];
-            debugger;
             this.data.forEach(item => {
                 if(item.basket && item.basket.prices && item.basket.qty) {
                     this.total += Number(item.basket.prices) * (Number(item.basket.qty))

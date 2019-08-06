@@ -12,7 +12,7 @@
                     :active="currentCardIndexUp"
                     @currentCardIndexUp="getIndexCard($event,'currentCardIndexUp')">
             </tab-component-account>
-            <accordeont-account v-if="currentCardIndexUp == 0"></accordeont-account>
+            <accordeont-account v-if="currentCardIndexUp == 0" :items="newData.accordeonItems || []"></accordeont-account>
             <edit-data
                     v-if="currentCardIndexUp == 1">
             </edit-data>
@@ -55,12 +55,20 @@
                         name: 'userData',
                         data: res.body
                     });
-                    return true
+                    return Auth.checkUserOrders(res.body.id, token)
                 })
                 .catch(res => console.log(res));
             if (!isHeader && token) return getUserInServer(token);
             return CookieHelper.setCookieDataInStore(isHeader, options, getUserInServer)
-                .then(res => console.log(res))
+                .then(res => {
+                    store.dispatch('auth/actionValue', {
+                        name: 'userData',
+                        data: {
+                            ...store.getters['auth/get_user'],
+                            accordeonItems: res.body
+                        }
+                    });
+                })
         },
 
         components: {
@@ -85,6 +93,11 @@
         },
         mounted() {
             document.body.addEventListener('mouseover',  this.isAutorize())
+        },
+        computed:{
+            newData(){
+                return JSON.parse(JSON.stringify(this.$store.getters['auth/get_user']));
+            }
         },
         methods: {
             getIndexCard(index, type) {

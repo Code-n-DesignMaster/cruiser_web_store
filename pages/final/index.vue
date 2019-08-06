@@ -25,6 +25,11 @@
                     </div>
                 </div>
             </div>
+            <div class="leave-message-final" v-if="!isComment">
+                <div class="final-title">
+                    Thank you for your feedback. &#10004;
+                </div>
+            </div>
             <div class="leave-message-final" v-if="isComment">
                 <div class="final-title">
                     Please give us your comment or feedback about your experience<span>(optional):</span>
@@ -194,19 +199,23 @@
         },
         created(){
             const hash = this.$router.history.current.query.result;
+
             this.dataPayment = hash && typeof hash == 'string' && JSON.parse(base64decode(hash));
+            console.log(this.dataPayment);
         },
         mounted(){
             this.Basket.deleteAllThing();
+            localStorage.clear();
             this.toStore('info', 'Successful purchase');
         },
         computed:{
             getTotalPrice(){
-                if(this.dataPayment.data.length == 1 ) {
+                // debugger;
+                if(this.dataPayment && this.dataPayment.data.length == 1 ) {
                     return Number(this.dataPayment.data[0].price) * Number(this.dataPayment.data[0].count)
                         + Number((this.dataPayment && this.dataPayment.user ? this.dataPayment.user.shipping.value : 0));
                 }
-                return [...this.dataPayment.data, ...[0]]
+                return [...[this.dataPayment ? this.dataPayment.data : 0], ...[0]]
                     .map(item => Number(item.price) * Number(item.count))
                     .reduce((a,b) => a + b) + Number((this.dataPayment && this.dataPayment.user ? this.dataPayment.user.shipping.value : 0))
             }

@@ -127,7 +127,7 @@
                                                 :options="arrayOfObjects"
                                                 :selected="country"
                                                 :class="errorRegister.country &&
-                                            errorRegister.country.errors && 'input-error'"
+                                                errorRegister.country.errors && 'input-error'"
                                                 @updateOption="methodToRunOnSelect">
                                         </dropdown>
                                     </div>
@@ -260,143 +260,51 @@
                             <div style="font-weight: bold;font-size: 14px;">Shipping Methods</div>
                             <div>total weigth: {{total_weight.toFixed(2)}}</div>
                         </div>
-                        <div class="shipping-checkbox table">
-                            <div class="postt">
+                        <div class="shipping-checkbox table"
+                             :style="{overflowX: data.rates.length <= 5 ? 'hidden' : 'scroll'}">
+                            <div class="postt" :style="{minWidth: data.rates.length <= 5 ? 'calc(100% / 6)' : '150px'}">
                                 <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
-                                    <input type="radio" id="simple1"
-                                           :checked="data.simple1.select"
-                                           name="fieldset-1" @click="active('simple1')"/>
-                                    <label for="simple1"></label>
+                                    <input type="radio" id="simple"
+                                           :checked="data.simple.select"
+                                           name="fieldset-1" @click="active('simple')"/>
+                                    <label for="simple"></label>
                                 </div>
                                 <div class="image">
 
                                 </div>
-                                <div class="date">
+                                <div class="date" >
+                                    <span  :style="{opacity: '0'}">{{ 'wqew' }}</span>
+                                </div>
+                                <div class="price">
                                     No transportation
                                 </div>
-                                <div class="price">
-                                    {{data.simple1.value ? '$' + data.simple1.value : ''}}
+                                <div class="date">
+                                    {{data.simple.value ? '$' + data.simple.value : ''}}
                                 </div>
                             </div>
-                            <div class="postt">
-                                <div class="close" v-if="!(data.simple2 && data.simple2.service_name)"></div>
+                            <div class="postt" v-for="(item, key) in data.rates"
+                                 :style="{minWidth: data.rates.length <= 5 ? 'calc(100% / 6)' : '150px'}">
+                                <div class="close" v-if="!(item && item.service_name)"></div>
                                 <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
-                                    <input type="radio" id="simple2"
-                                           :checked="data.simple2.select"
-                                           name="fieldset-1" @click="active('simple2')"/>
-                                    <label for="simple2"></label>
+                                    <input type="radio" :id="'simple' + (key + 1)"
+                                           :checked="item && item.select"
+                                           name="fieldset-1" @click="active('rates', key)"/>
+                                    <label :for="'simple' + (key + 1)"></label>
                                 </div>
                                 <div
                                         class="image"
-                                        v-if="data.simple2.url"
-                                        :title="data.simple2 && data.simple2.service_name"
-                                        :style="{backgroundImage: `url(${data.simple2.url})`}">
-                                </div>
-                                <div style="height: 50px;padding: 0 10px;"  v-if="!data.simple2.url">
-                                    {{data.simple2 && data.simple2.service_name}}
+                                        v-if="item && item.url"
+                                        :title="item && item.service_name"
+                                        :style="{backgroundImage: `url(${item && item.url})`}">
                                 </div>
                                 <div class="date">
-                                    {{data.simple2 && data.simple2.max_delivery_date | dayFormat}}
+                                    <span  :style="{opacity: item ? '1' : '0'}">{{item? item.service_name : 'wqew'}}</span>
                                 </div>
                                 <div class="price">
-                                    {{data.simple2.value ? '$' + data.simple2.value : ''}}
-                                </div>
-                            </div>
-                            <div class="postt">
-                                <div class="close" v-if="!(data.simple3 && data.simple3.service_name)"></div>
-                                <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
-                                    <input type="radio"
-                                           id="simple3"
-                                           :checked="data.simple3.select"
-                                           name="fieldset-1" @click="active('simple3')"/>
-                                    <label for="simple3"></label>
-                                </div>
-                                <div
-                                        class="image"
-                                        :title="data.simple3 && data.simple3.service_name"
-                                        v-if="data.simple3.url"
-                                        :style="{backgroundImage: `url(${data.simple3.url})`}">
-                                </div>
-                                <div style="height: 50px;padding: 0 10px;"  v-if="!data.simple3.url">
-                                    {{data.simple3 && data.simple3.service_name}}
+                                    {{(item && item.max_delivery_date) | dayFormat }}
                                 </div>
                                 <div class="date">
-                                    {{data.simple3 && data.simple3.max_delivery_date | dayFormat}}
-                                </div>
-                                <div class="price">
-                                    {{data.simple3.value ? '$' + data.simple3.value : ''}}
-                                </div>
-                            </div>
-                            <div class="postt">
-                                <div class="close" v-if="!(data.simple4 && data.simple4.service_name)"></div>
-                                <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
-                                    <input type="radio" id="simple4"
-                                           :checked="data.simple4.select"
-                                           name="fieldset-1" @click="active('simple4')"/>
-                                    <label for="simple4"></label>
-                                </div>
-                                <div
-                                        class="image"
-                                        :title="data.simple4 && data.simple4.service_name"
-                                        v-if="data.simple4.url"
-                                        :style="{backgroundImage: `url(${data.simple4.url})`}">
-                                </div>
-                                <div style="height: 50px;padding: 0 10px;"  v-if="!data.simple4.url">
-                                    {{data.simple4 && data.simple4.service_name}}
-                                </div>
-                                <div class="date">
-                                    {{data.simple4 && data.simple4.max_delivery_date | dayFormat}}
-                                </div>
-                                <div class="price">
-                                    {{data.simple4.value ? '$' + data.simple4.value : ''}}
-                                </div>
-                            </div>
-                            <div class="postt">
-                                <div class="close" v-if="!(data.simple5 && data.simple5.service_name)"></div>
-                                <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
-                                    <input type="radio" id="simple5"
-                                           :checked="data.simple5.select"
-                                           name="fieldset-1" @click="active('simple5')"/>
-                                    <label for="simple5"></label>
-                                </div>
-                                <div
-                                        class="image"
-                                        :title="data.simple5 && data.simple5.service_name"
-                                        v-if="data.simple5.url"
-                                        :style="{backgroundImage: `url(${data.simple5.url})`}">
-                                </div>
-                                <div style="height: 50px;padding: 0 10px;"  v-if="!data.simple5.url">
-                                    {{data.simple5 && data.simple5.service_name}}
-                                </div>
-                                <div class="date">
-                                    {{data.simple5 && data.simple5.max_delivery_date | dayFormat}}
-                                </div>
-                                <div class="price">
-                                    {{data.simple5.value ? '$' + data.simple5.value : ''}}
-                                </div>
-                            </div>
-                            <div class="postt">
-                                <div class="close" v-if="!(data.simple6 && data.simple6.service_name)"></div>
-                                <div class="styled-input-single d-flex align-items-center" style="margin-left: 8px">
-                                    <input type="radio" id="simple6"
-                                           :checked="data.simple6.select"
-                                           name="fieldset-1" @click="active('simple6')"/>
-                                    <label for="simple6"></label>
-                                </div>
-                                <div
-                                        class="image"
-                                        :title="data.simple6 && data.simple6.service_name"
-                                        v-if="data.simple6.url"
-                                        :style="{backgroundImage: `url(${data.simple6.url})`}">
-                                </div>
-                                <div style="height: 50px;padding: 0 10px;"  v-if="!data.simple6.url">
-                                    {{data.simple6 && data.simple6.service_name}}
-                                </div>
-                                <div class="date">
-                                    {{data.simple6 && data.simple6.max_delivery_date | dayFormat}}
-                                </div>
-                                <div class="price">
-                                    {{data.simple6.value ? '$' + data.simple6.value : ''}}
+                                    {{ item && item.value ? '$' + item ? item.value: '' : ''}}
                                 </div>
                             </div>
                         </div>
@@ -651,31 +559,12 @@
                 TOKEN: new Token(this.$store),
                 items: [],
                 data: {
-                    simple1: {
+                    simple: {
                         inCanada: true,
                         select: false,
                         value: '0.99'
                     },
-                    simple2: {
-                        select: false,
-                        value: '0',
-                    },
-                    simple3: {
-                        select: false,
-                        value: '0'
-                    },
-                    simple4: {
-                        select: false,
-                        value: '0'
-                    },
-                    simple5: {
-                        select: false,
-                        value: '0'
-                    },
-                    simple6: {
-                        select: false,
-                        value: '0'
-                    },
+                    rates: this.setDefaultArray()
                 },
                 payment: {
                     paypal: false,
@@ -698,7 +587,8 @@
             try{
                 const data = JSON.parse(localStorage.getItem('data'));
                 this.country = data.country;
-                this.data = data.data;
+                data.data.rates && (this.data.rates = data.data.rates);
+                data.data.simple && (this.data.simple = data.data.simple);
                 this.setUser({
                     target: {
                         value: data.country && data.country.code ? data.country.code : ''
@@ -728,8 +618,8 @@
 
             getShipping() {
                 let array = [];
-                Object.keys(this.data).forEach(item => array.push(this.data[item]));
-                const item = array.find(item => item.select);
+                if(this.data.simple.select) return this.data.simple.value;
+                const item = this.data.rates.find(item => item.select);
                 return item ? item.value : 0;
             },
 
@@ -764,9 +654,14 @@
 
         methods: {
 
-            active(flag) {
-                Object.keys(this.data).forEach(item => this.data[item].select = false);
-                this.data[flag].select = true;
+            active(flag, index) {
+                flag == 'rates' && (this.data[flag] = this.data[flag].map(item => {
+                     item.select = false;
+                     return item;
+                }));
+
+                this.data.simple.select = false;
+                flag == 'rates' ? this.data[flag][index].select = true : this.data[flag].select = true;
             },
 
             activeOther(flag) {
@@ -775,11 +670,25 @@
             },
 
             setUser(event, data, type) {
+                if(type == 'email') {
+                    return Auth.checkEmail(event.target.value)
+                        .then(res => {
+                            res.status == 202 && (this.errorRegister = {
+                                email:{
+                                    errors: true
+                                }
+                            }, this.toStore('error', res.body.data.email[0]))
+                        })
+                }
                 data[type] = event.target.value;
                 this.$store.dispatch('auth/actionValue', {
                     name: 'userData',
                     data: data
                 })
+            },
+
+            setDefaultArray(def = 0){
+                return Array.apply(null, {length: 5 - def}).map(Number.call, Number)
             },
 
             subtotal(hash) {
@@ -798,7 +707,7 @@
 
             order() {
 
-                if (!Object.keys(this.data).some(item => this.data[item].select)) {
+                if (!this.data.rates.some(item => item.select) || !this.data.simple.select) {
                     return this.toStore('error', 'You don`t select shipping');
                 }
 
@@ -844,8 +753,8 @@
                             shipping: {}
                         }
                     };
-                    Object.keys(this.data)
-                        .forEach(item => this.data[item].select && (obj.user.shipping = this.data[item]));
+                    this.data.rates.forEach(item => item.select && (obj.user.shipping = item));
+                    !obj.user.shipping && (obj.user.shipping = this.data.simple);
                     this.errorRegister = {};
                     let url_data = `http://cruiser-webstore-back.qbex.io/paypal?result=${base64encode(JSON.stringify(obj))}&amount=${this.getTotalPrice}`;
                     window.location.href = url_data;
@@ -963,26 +872,23 @@
                         .then(res => {
                             const actionData = ['currency', 'min_delivery_date', 'max_delivery_date', 'service_code', 'service_name', 'url', 'total_price']
                             this.errorRegister = {};
-                            let data = res.body.rates
-                                .sort(() => Math.random() - 0.5).splice(0, 5)
-                                .sort((a, b) => a.total_price - b.total_price);
-
-                            Object.keys(this.data).forEach((item, index) => {
-                                if(index == 0) return;
-                                actionData.forEach(act => this.data[item][act] && delete this.data[item][act]);
-                                this.data[item] = {
-                                    ...(data[index - 1] || {}),
-                                    ...this.data[item]
-                                };
-                                this.data[item].value = data[index - 1] ? data[index - 1].total_price : 0;
-                                this.data[item].select = false;
+                            let data = res.body.rates.sort((a, b) => a.total_price - b.total_price);
+                            this.data.rates = data.map((item, index) => {
+                                item.value = item && item.total_price ? item.total_price : 0;
+                                item.select = false;
+                                item.index = index;
                                 this.shippings.forEach(img => {
-                                    if(data[index - 1]) {
-                                        let arr = data[index - 1].service_name.split(' ');
-                                        img.key.indexOf(arr[0].toLowerCase()) > -1 && (this.data[item].url = img.url)
+                                    if(item) {
+                                        let arr = item.service_name.split(' ');
+                                        img.key.indexOf(arr[0].toLowerCase()) > -1 && (item.url = img.url)
                                     }
                                 });
+                                return item;
                             });
+                            this.data.rates.length < 5
+                            &&
+                            (this.data.rates = this.data.rates.concat(this.setDefaultArray(this.data.rates.length)));
+
                             localStorage.setItem('data', JSON.stringify({
                                 data:this.data,
                                 postal_code:this.dataRegister.postal_code,
@@ -1362,7 +1268,6 @@
         flex-direction: column;
         align-items: center;
         border-right: 1px solid #D4D7DE;
-        width: calc(100% / 6);
         color: #32405B;
         font-weight: normal;
         font-size: 10px;
@@ -1409,7 +1314,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 10px;
+        margin: 10px 0;
     }
 
     .all-total {

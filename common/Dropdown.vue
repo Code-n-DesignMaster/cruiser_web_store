@@ -1,25 +1,25 @@
 <template>
     <div class="btn-group">
-        <div @click="toggleMenu()"  :style="{
+        <!--<div v-if="selectedOption.name_en">-->
+            <!--<input type="text" @focus="showMenu = true" @blur="showMenu = false" :style="{-->
+                    <!--height: `${height ? height : 20 }px`,-->
+                    <!--minWidth: `${width ? width : 160 }px`-->
+                <!--}"-->
+                 <!--class="dropdown-toggle" :value="selectedOption.name_en">-->
+                <!--<span class="caret" :class="showMenu && 'active'"></span>-->
+        <!--</div>-->
+        <!--v-if="!selectedOption.name_en"-->
+        <div>
+            <input @focus="open()" @blur="close()" :style="{
                     height: `${height ? height : 20 }px`,
                     minWidth: `${width ? width : 160 }px`
-                }"
-             class="dropdown-toggle" v-if="selectedOption.name_en">
-            {{ selectedOption.name_en }}
-            <span class="caret" :class="showMenu && 'active'"></span>
+                }" v-model="text"
+                 class="dropdown-toggle" :placeholder="placeholderText">
+                <!--<span class="caret" :class="showMenu && 'active'"></span>-->
         </div>
 
-        <div @click="toggleMenu()" :style="{
-                    height: `${height ? height : 20 }px`,
-                    minWidth: `${width ? width : 160 }px`
-                }"
-             class="dropdown-toggle" v-if="!selectedOption.name_en">
-            {{placeholderText}}
-            <span class="caret" :class="showMenu && 'active'"></span>
-        </div>
-
-        <ul class="dropdown-menu" v-if="showMenu">
-            <li v-for="option in options" class="pointer" @click="updateOption(option)">
+        <ul class="dropdown-menu" v-if="showMenu && !(optionsFilter.length == 0)">
+            <li v-for="option in optionsFilter" class="pointer" @click="updateOption(option)">
                 <a>
                     {{ option.name_en }}
                 </a>
@@ -36,6 +36,7 @@
                     name_en: '',
                 },
                 showMenu: false,
+                text: '',
                 placeholderText: 'Please select country',
             }
         },
@@ -55,18 +56,40 @@
 
         mounted() {
             this.selectedOption = this.selected;
+            this.text = this.selectedOption.name_en;
             if (this.placeholder) this.placeholderText = this.placeholder;
+        },
+
+        computed:{
+            optionsFilter(){
+                return this.options.filter(item => {
+                    const textLocal = new String(item.name_en.toLowerCase());
+                    return this.text ? textLocal.indexOf(this.text.toLowerCase()) > -1 : true
+                })
+            }
         },
 
         methods: {
             updateOption(option) {
                 this.selectedOption = option;
                 this.showMenu = false;
+                this.text = this.selectedOption.name_en;
                 this.$emit('updateOption', this.selectedOption);
             },
-
-            toggleMenu() {
-                this.showMenu = !this.showMenu;
+            close (){
+                this.interval = setTimeout(() => {
+                    this.showMenu = false;
+                    if(this.text != this.selectedOption.name_en) {
+                        this.selectedOption = {};
+                        this.selectedOption.name_en = this.text;
+                    }
+                    this.$emit('updateOption', this.selectedOption);
+                    clearInterval(this.interval);
+                }, 1000)
+            },
+            open(){
+                this.showMenu = true;
+                clearInterval(this.interval)
             }
         }
     }

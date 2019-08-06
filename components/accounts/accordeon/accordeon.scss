@@ -2,15 +2,24 @@
     margin: 0;
     padding: 0;
     margin-top: 33px;
+    overflow-y: hidden;
 }
 
 .tab-component li {
 
     width: 100%;
     margin-bottom: 15px;
-    list-style: none;
+    list-style: none;    overflow-y: hidden;
 }
-
+.title{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    margin: 10px 0;
+    letter-spacing: -0.06px;
+    color: #32405B;
+}
 .close {
     padding: 16px 12px;
     box-sizing: border-box;
@@ -39,6 +48,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     transition: 1s all;
+    overflow: hidden;
 }
 
 .active.true {
@@ -46,9 +56,20 @@
     height: auto;
     overflow-y: auto;
 }
-
+.container-logo {
+    display: flex;
+    justify-content: space-around;
+}
 .total-accord {
     display: flex;
+}
+.logo {
+    width: 16px;
+    height: 13px;
+    background-image: url("./../../../assets/Logo.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .badge {
@@ -75,4 +96,102 @@
 
 .red {
     background: #CA4635;
+}
+
+table.COMPATIBILITY {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ECF0F3;
+    font-weight: bold;
+    font-size: 11.289px;
+    letter-spacing: -0.0566328px;
+    color: #32405B;
+    margin-bottom: 78px;
+    height: 30px;    overflow-y: hidden;
+}
+
+table.COMPATIBILITY th, table.COMPATIBILITY td {
+    text-align: left;
+    border-right: 2px solid white;
+}
+table{
+    overflow-y: hidden;
+}
+table.COMPATIBILITY tr {
+    font-weight: normal;
+    border-bottom: 2px solid white;    overflow-y: hidden;
+}
+
+.tw1 {
+    width: 134px;
+    max-width: 134px;
+}
+
+.tw2 {
+    width: 160px;
+    max-width: 160px;
+}
+
+.tw3 {
+    width: 160px;
+    max-width: 160px;
+}
+
+.tw4 {
+    width: 146px;
+    max-width: 146px;
+}
+
+.tw5 {
+    width: 325px;
+    max-width: 325px;
+}
+
+.tw6 {
+    width: 76px;
+    max-width: 76px;
+}
+
+.padding {
+    padding: 6px 12px;
+}
+
+.tw1o {
+    width: 134px;
+    max-width: 134px;
+}
+
+.tw2o {
+    width: 380px;
+    max-width: 380px;
+}
+
+.tw3o {
+    width: 100px;
+    max-width: 100px;
+}
+
+.tw4o {
+    width: 90px;
+    max-width: 90px;
+}
+
+.tw5o {
+    width: 46px;
+    max-width: 46px;
+}
+
+.tw6o {
+    width: 80px;
+    max-width: 80px;
+}
+
+.tw7o {
+    width: 80px;
+    max-width:80px;
+}
+
+.tw8o {
+    width: 106px;
+    max-width: 106px;
 }
