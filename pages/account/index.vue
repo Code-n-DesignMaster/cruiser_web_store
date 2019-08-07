@@ -19,8 +19,8 @@
             <cars v-if="currentCardIndexUp == 2"></cars>
             <saved-search v-if="currentCardIndexUp == 3"></saved-search>
             <div class="action">
-                <div class="pointer" @click="saveData()">SAVE</div>
-                <div class="pointer" @click="logout()">Cancel</div>
+                <div class="pointer" style="color: white" @click="saveData()">SAVE</div>
+                <!--<div class="pointer" @click="logout()">Cancel</div>-->
             </div>
 
         </div>
@@ -92,6 +92,19 @@
             this.isAutorize()
         },
         mounted() {
+            if(!(!this.$store.getters['auth/get_user'] && !this.$store.getters['auth/get_user'].accordeonItems)){
+                const token = cookie.parse(document.cookie)['token'];
+                Auth.checkUserOrders(this.$store.getters['auth/get_user'].id, token)
+                    .then(res => {
+                        this.$store.dispatch('auth/actionValue', {
+                            name: 'userData',
+                            data: {
+                                ...this.$store.getters['auth/get_user'],
+                                accordeonItems: res.body
+                            }
+                        });
+                    })
+            }
             document.body.addEventListener('mouseover',  this.isAutorize())
         },
         computed:{
@@ -117,7 +130,17 @@
                 window.$nuxt.$loading.start();
                 Auth.saveUser(this.$store.getters['auth/get_user'],token )
                     .then(res => window.$nuxt.$loading.finish())
+                    .catch(err => {
+                        this.storeMessage('error', "Error save");
+                        window.$nuxt.$loading.finish();
+                    })
             },
+            storeMessage(type, mes){
+                this.$store.commit('error/setValue', {
+                    name: 'data',
+                    data: {type: type, text: mes, active: true}
+                });
+            }
         },
         destroyed() {
             document.body.removeEventListener('mousemove', this.isAutorize())

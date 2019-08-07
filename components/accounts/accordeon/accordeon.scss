@@ -106,7 +106,7 @@ table.COMPATIBILITY {
     font-size: 11.289px;
     letter-spacing: -0.0566328px;
     color: #32405B;
-    margin-bottom: 78px;
+    margin-bottom: 35px;
     height: 30px;    overflow-y: hidden;
 }
 
@@ -128,8 +128,8 @@ table.COMPATIBILITY tr {
 }
 
 .tw2 {
-    width: 160px;
-    max-width: 160px;
+    width: 325px;
+    max-width: 325px;
 }
 
 .tw3 {
@@ -143,8 +143,8 @@ table.COMPATIBILITY tr {
 }
 
 .tw5 {
-    width: 325px;
-    max-width: 325px;
+    width: 160px;
+    max-width: 160px;
 }
 
 .tw6 {
@@ -194,4 +194,19 @@ table.COMPATIBILITY tr {
 .tw8o {
     width: 106px;
     max-width: 106px;
+}
+
+.total{
+    background: #ECF0F3;
+    width: 100%;
+    font-weight: bold;
+    font-size: 11.289px;
+    letter-spacing: -0.0566328px;
+    color: #32405B;
+    margin-bottom: 78px;
+    height: 30px;
+    overflow-y: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }

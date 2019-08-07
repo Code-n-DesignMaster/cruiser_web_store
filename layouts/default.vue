@@ -343,7 +343,7 @@
         align-items: center;
         color: #fff;
         pointer-events: none;
-        z-index: 1000;
+        z-index: 10000;
         font-size: 14px;
         right: 10px;
         top: 10px;

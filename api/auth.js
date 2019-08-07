@@ -34,6 +34,7 @@ export class Auth {
 
     static saveUser(data, token) {
         data = JSON.parse(JSON.stringify(data));
+        data.accordeonItems && delete data.accordeonItems;
         Object.keys(data).forEach(item => !data[item] && delete data[item]);
         return Vue.http.put(`api/user/${data.id}`, data, {
             headers: {

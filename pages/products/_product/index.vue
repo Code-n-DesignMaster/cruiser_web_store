@@ -252,7 +252,6 @@
             setHtmlCard(count){
                 return [...this.items].splice(count,4).map((item, index) => {
                     let data = {...item};
-                    console.log(this.allProducts.indexOf(data.unique_hash) > -1)
                     return  `<div class="container-carousel container-carousel-small" style="background: #ECF0F3;">
                                    <div class="test-card">
                                           <div class="picture-description">
@@ -267,7 +266,7 @@
                                           <div class="total-add">
                                                <div class="card-price"><span>$</span>${data.price}</div>
                                                <div class="add-cart all-center
-                                    ${this.allProducts.indexOf(data.unique_hash) > -1 ? 'active': ''}">
+                                                ${this.allProducts.indexOf(data.unique_hash) > -1 ? 'active': ''}">
                                                     ADD TO CART
                                                 </div>
                                           </div>

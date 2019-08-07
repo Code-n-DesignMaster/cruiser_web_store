@@ -753,6 +753,7 @@
                             shipping: {}
                         }
                     };
+                    obj.user.accordeonItems && delete obj.user.accordeonItems;
                     this.data.rates.forEach(item => item.select && (obj.user.shipping = item));
                     !obj.user.shipping && (obj.user.shipping = this.data.simple);
                     this.errorRegister = {};

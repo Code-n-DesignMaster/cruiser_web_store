@@ -2,61 +2,61 @@
     <li v-for="(item, index) in items"
         @click="activeTab(index)">
         <div class="close" :class="item.active ? 'true' : ''">
-            <div class="title">{{new Date(item.created_at)}} Order: {{item.id}}</div>
+            <div class="title">{{date(item.created_at)}} Order: {{item.id}}</div>
             <div class="total-accord">
-                <div>Total: <span style="font-weight: bold">$390.25</span></div>
+                <div>Total: <span style="font-weight: bold">${{item.order.amount}}</span></div>
                 <div style="margin-left: 30px">Status: <span class="badge red">SHIPPED</span></div>
             </div>
         </div>
         <div class="active" :class="item.active ? 'true' : ''">
-            <!--<div>Information about order:</div>-->
-            <!--<table class="COMPATIBILITY">-->
-                <!--<tr>-->
-                    <!--<th class="tw1" colspan="3">-->
-                        <!--<div class="tw1 nested-text">Name</div>-->
-                    <!--</th>-->
-                    <!--<th class="tw2" colspan="3">-->
-                        <!--<div class="tw2 nested-text">Model</div>-->
-                    <!--</th>-->
-                    <!--<th class="tw3">-->
-                        <!--<div class="tw3 nested-text">Description</div>-->
-                    <!--</th>-->
-                    <!--<th class="tw4">-->
-                        <!--<div class="tw4 nested-text">ProdPeriod</div>-->
-                    <!--</th>-->
-                    <!--<th class="tw5">-->
-                        <!--<div class="tw5 nested-text">Options</div>-->
-                    <!--</th>-->
-                    <!--<th class="tw6">-->
-                        <!--<div class="tw6 nested-text">Diagram</div>-->
-                    <!--</th>-->
-                <!--</tr>-->
-                <!--<tr v-for="item in [1,2,3,4]">-->
-                    <!--<td class="tw1" colspan="3">-->
-                        <!--<div class="tw1 nested-text container-logo">-->
-                            <!--<div class="logo"></div>-->
-                            <!--<div style="font-weight: bold">TOYOTA</div>-->
-                        <!--</div>-->
-                    <!--</td>-->
-                    <!--<td class="tw2" colspan="3">-->
-                        <!--<div class="tw2 nested-text">ASV50L - CETSKY</div>-->
-                    <!--</td>-->
-                    <!--<td class="tw3">-->
-                        <!--<div class="tw3 nested-text">ASV50</div>-->
-                    <!--</td>-->
-                    <!--<td class="tw4">-->
-                        <!--<div class="tw4 nested-text">04.2015 - 06.2017</div>-->
-                    <!--</td>-->
-                    <!--<td class="tw5">-->
-                        <!--<div class="tw5 nested-text">ATM, MTM: AUTOMATIC TRANSMISSION</div>-->
-                    <!--</td>-->
-                    <!--<td class="tw6">-->
-                        <!--<div class="tw6 nested-text">-->
-                            <!--<div class="logo logo-diagrams"></div>-->
-                        <!--</div>-->
-                    <!--</td>-->
-                <!--</tr>-->
-            <!--</table>-->
+            <div class="title">Information about order:</div>
+            <table class="COMPATIBILITY">
+                <tr>
+                    <th class="tw1" colspan="3">
+                        <div class="tw1 padding nested-text">NAME</div>
+                    </th>
+                    <th class="tw2" colspan="3">
+                        <div class="tw2 padding nested-text">SHIPPING ADDRESS</div>
+                    </th>
+                    <th class="tw3">
+                        <div class="tw3 padding nested-text">PHONE</div>
+                    </th>
+                    <th class="tw4">
+                        <div class="tw4 padding nested-text">CARRIER</div>
+                    </th>
+                    <th class="tw5">
+                        <div class="tw5 padding nested-text">TRACKING</div>
+                    </th>
+                    <th class="tw6">
+                        <div class="tw6 padding nested-text">CAR</div>
+                    </th>
+                </tr>
+
+                <tr>
+                    <td class="tw1" colspan="3">
+                        <div class="tw1 padding nested-text">
+                            {{item.order.user.first_name}} {{item.order.user.last_name}}
+                        </div>
+                    </td>
+                    <td class="tw2" colspan="3">
+                        <div class="tw2 padding nested-text">{{item.order.user.first_name}}</div>
+                    </td>
+                    <td class="tw3">
+                        <div class="tw3 padding nested-text">{{item.order.user.street_address}}</div>
+                    </td>
+                    <td class="tw4">
+                        <div class="tw4 padding nested-text">---- </div>
+                    </td>
+                    <td class="tw5">
+                        <div class="tw5 padding nested-text">----</div>
+                    </td>
+                    <td class="tw6">
+                        <div class="tw6 padding nested-text">
+                            ----
+                        </div>
+                    </td>
+                </tr>
+            </table>
             <div class="title">Order List:</div>
             <table class="COMPATIBILITY">
                 <tr>
@@ -117,14 +117,21 @@
                     </td>
                     <td class="tw8o">
                         <div class="tw8o padding nested-text" style="font-weight: bold">
-                            ${{Number(order.count) * Number(order.price)}}
+                            ${{(Number(order.count) * Number(order.price)).toFixed(2)}}
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td class="total">{{total(item)}}</td>
+                    <td colspan="12"
+                        style="text-align: right; margin-right: 30px"
+                        class="padding">
+                        <span style="font-weight: normal; margin-left: 30px">Total:</span>
+                        <span style="margin-right: 64px;font-weight: bold">${{total(item).toFixed(2)}}
+                        </span>
+                    </td>
                 </tr>
             </table>
+
         </div>
     </li>
 </ul>

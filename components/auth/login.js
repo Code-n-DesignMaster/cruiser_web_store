@@ -26,9 +26,12 @@ export default {
 
     },
     mounted() {
+
         document.body.style.overflowY = 'hidden'
+
     },
     methods: {
+
         login() {
             const error = JSON.parse(JSON.stringify(this.errorLogin));
             error.password = Validator.set(
@@ -71,27 +74,35 @@ export default {
                         }
                         this.$router.push(`/account`);
                     }
+                }).catch(err => {
+                    this.storeMessage('error',  'Incorrect email or password');
+                    console.log(err.body.message);
+                    window.$nuxt.$loading.finish()
                 });
             else {
                 this.errorLogin = error
             }
         },
+
         toRegister(){
             this.clearData();
             this.toStore(false, 'loginModal');
             this.toStore(true, 'registerModal');
         },
+
         toLogin(){
             this.clearData();
             this.toStore(true, 'loginModal');
             this.toStore(false, 'registerModal');
         },
+
         toStore(data, type){
             this.$store.dispatch('auth/actionValue', {
                 name: type,
                 data: data
             });
         },
+
         register(){
             const error = JSON.parse(JSON.stringify(this.errorRegister));
             error.password = Validator.set(
@@ -141,20 +152,27 @@ export default {
                         window.$nuxt.$loading.finish(),
                         this.toLogin()
                     )
-                }) :
+                }).catch(err => {
+                    this.storeMessage('error', 'The email has already been taken.');
+                    console.log(err.body.message);
+                    window.$nuxt.$loading.finish()
+                }):
                 (this.errorRegister = new Object(error), window.$nuxt.$loading.finish());
         },
+
         clearData() {
             this.dataLogin = {};
             this.dataRegister= {};
             this.errorLogin = {};
             this.errorRegister = {};
         },
+
         close(){
             this.clearData();
             this.toStore(false, 'loginModal');
             this.toStore(false, 'registerModal');
         },
+
         storeMessage(type, mes){
             this.$store.commit('error/setValue', {
                 name: 'data',
@@ -162,6 +180,7 @@ export default {
             });
         }
     },
+
     destroyed(){
         document.body.style.overflowY = 'scroll'
     },
