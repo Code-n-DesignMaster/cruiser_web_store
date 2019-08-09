@@ -48,7 +48,8 @@
             <a
                 class="link pointer"
                 v-for="item in menu_page"
-                @click.prevent="(isMenu = false, $router.push(item.path))"
+                :class="!item.active && 'disabled-link'"
+                @click.prevent="(isMenu = false, item.active && $router.push(item.path))"
                 :key="item.name">
                 {{item.name}}
             </a>

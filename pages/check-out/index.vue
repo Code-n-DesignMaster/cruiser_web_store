@@ -8,7 +8,7 @@
                 </div>
                 <div style="display: flex;" class="pointer" @click="$router.replace('products')">
                     <div class="button-continue-checkout-back-image"></div>
-                    <div class="button-continue-checkout button-continue-checkout-back">Continue shoping</div>
+                    <div class="button-continue-checkout button-continue-checkout-back">Continue shopping</div>
                 </div>
             </div>
             <div class="check-out">
@@ -28,7 +28,7 @@
                                             @input="setUser($event, dataRegister, 'email')">
                                 </div>
                             </div>
-                            <div class="sotial-login">
+                            <div class="sotial-login" v-if="!isAutorize">
                                 <div class="all-center pointer">
                                     <div class="sotial-picture google"></div>
                                     GOOGLE
@@ -57,13 +57,13 @@
                                                 v-model="dataRegister.last_name"
                                                 placeholder="This is a required field"
                                                 :class="errorRegister.last_name &&
-                                             errorRegister.last_name.errors && 'input-error'"
+                                                errorRegister.last_name.errors && 'input-error'"
                                                 @input="setUser($event, dataRegister, 'last_name')">
                                     </div>
                                 </div>
                             </div>
                             <div class="personal-data-item">
-                                <label>Street Adress<span class="badge-require">*</span></label>
+                                <label>Street Address<span class="badge-require">*</span></label>
                                 <div>
                                     <input
                                             v-model="dataRegister.street_address"
@@ -74,7 +74,7 @@
                                 </div>
                             </div>
                             <div class="personal-data-item">
-                                <label>Street Adress 2</label>
+                                <label>Street Address 2</label>
                                 <div>
                                     <input
                                             v-model="dataRegister.street_address_two"
@@ -147,7 +147,7 @@
                                 </div>
                             </div>
 
-                            <div class="select-result-simple" style="margin-top: 20px">
+                            <div class="select-result-simple" style="margin-top: 20px" v-if="!isAutorize">
                                 <div class="styled-input-single d-flex align-items-center checked">
                                     <input type="checkbox" id="addressSame" name="fieldset-1" v-model="addressSame"/>
                                     <label for="addressSame" class="check">My billing and shipping address are the
@@ -155,11 +155,11 @@
                                 </div>
                             </div>
 
-                            <div style="background: #DADADA;width: 100%;height: 1px; margin-bottom: 20px; margin-top: 20px">
-
+                            <div v-if="!isAutorize"
+                                 style="background: #DADADA;width: 100%;height: 1px; margin-bottom: 20px; margin-top: 20px">
                             </div>
 
-                            <div class="select-result-simple">
+                            <div class="select-result-simple" v-if="!isAutorize">
                                 <div class="styled-input-single d-flex align-items-center checked">
                                     <input type="checkbox" id="crAc" name="fieldset-1" v-model="crAc"/>
                                     <label for="crAc" class="check">Create Account</label>
@@ -245,7 +245,7 @@
                         <div style="display: flex">
                             <div class="post-5" style="border-right: 2px solid white;width: 60px">{{getTotalQty}}pcs
                             </div>
-                            <div class="post-6" style="width: 65px; margin-left:5px">${{getTotalPrice.toFixed(2)}}</div>
+                            <div class="post-6" style="width: 65px; margin-left:5px">${{getTotalPriceOnlyBasket.toFixed(2)}}</div>
                         </div>
                     </div>
                     <div class="coupon-system">
@@ -616,6 +616,10 @@
                 return this.sum(this.items, true) + Number(this.getShipping)
             },
 
+            getTotalPriceOnlyBasket() {
+                return this.sum(this.items, true)
+            },
+
             getShipping() {
                 let array = [];
                 if(this.data.simple.select) return this.data.simple.value;
@@ -636,6 +640,14 @@
                 return JSON.parse(JSON.stringify(this.items))
                     .map(item => Number(item.weight_physical) * item.basket.qty)
                     .reduce((a, b) => a + b)
+            },
+
+            isAutorize(){
+                try {
+                    return this.TOKEN.getToken()
+                } catch (e) {
+                    return null
+                }
             }
 
         },
@@ -707,13 +719,13 @@
 
             order() {
 
-                if (!this.data.rates.some(item => item.select) || !this.data.simple.select) {
+                if (this.data.rates.some(item => item.select) || this.data.simple.select) {
                     return this.toStore('error', 'You don`t select shipping');
                 }
 
                 if (!this.agree) return this.toStore('error', 'You don`t confirm checked');
-                if (!this.payment.paypal && !this.payment.visa) return this.toStore('error', 'You don`t  choice payment');
 
+                if (!this.payment.paypal && !this.payment.visa) return this.toStore('error', 'You don`t  choice payment');
 
                 let items = JSON.parse(JSON.stringify(this.items));
                 items = items.map(item => {
@@ -925,7 +937,7 @@
     }
 
     .check-product {
-        width: 70%;
+        width:62%;
     }
 
     .table-products {

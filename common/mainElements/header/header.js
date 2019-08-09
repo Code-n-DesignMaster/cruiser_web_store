@@ -14,13 +14,13 @@ export default {
     data() {
         return {
             menu_page: [
-                {name:'PRODUCTS', path:'/products'},
+                {name:'PRODUCTS', path:'/products', active: true},
                 {name:'ABOUT US', path:'/products'},
                 {name:'Number', path:'/products'},
                 {name:'FAQ', path:'/products'},
                 {name:'CUSTOMER’S PROJECTS', path:'/products'},
-                {name:'POLICIES', path:'/products'},
-                {name:'WARRANTY', path:'/products'},
+                {name:'POLICIES', path:'/return-and-shipping', active: true},
+                {name:'WARRANTY', path:'/warranty', active: true},
                 {name:'NEWS', path:'/products'},
                 {name:'CONTACT US', path:'/products'},
                 {name:'BRANDS', path:'/products'}
