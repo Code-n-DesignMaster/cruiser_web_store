@@ -1,3 +1,3 @@
 export const enviroment = {
-    url: 'http://cruiser-webstore-back.qbex.io/'
+    url: 'https://cruiser-webstore-back.qbex.io/'
 };
