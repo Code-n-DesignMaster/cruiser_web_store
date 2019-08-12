@@ -7,7 +7,7 @@
     </div>
     <div class="basket-container-products">
         <div class="item-shop-basket" v-for="(item, index) in data">
-            <div class="item-shop-basket-picture"></div>
+            <div class="item-shop-basket-picture" :style="{backgroundImage: 'url(' + setImage(0, item)  + ')'}"></div>
             <div class="item-shop-basket-name">
                 <div class="item-shop-basket-name-title">
                     Brand:

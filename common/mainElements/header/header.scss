@@ -183,13 +183,76 @@ input[type=search]::placeholder {
 .link:first-child {
     padding-left: 0;
 }
+
 #popub-auth{
     display: none;
 }
+
 #popub-auth.active{
     display: block;
 }
 
 .disabled-link{
     color: grey;
+}
+
+.info{
+    position: relative;
+    cursor: pointer;
+}
+
+.info:hover > .popubInfo{
+    display: block;
+}
+
+.popubInfo{
+    display: none;
+    position: absolute;
+    bottom: -162px;
+    left: -62px;
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+}
+
+.popubInfoHeader{
+    width: calc(330px - 30px);
+    padding: 15px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 0px;
+    color: #FFFFFF;
+    background: #32405B;
+}
+
+.popubInfoHeader:after{
+    content: '';
+    position: absolute;
+    left: 61px;
+    top: -9px;
+    width: 18px;
+    height: 18px;
+    background: #32405B;
+    transform: rotate(45deg);
+    border-top: 1px solid #32405B;
+    border-left: 1px solid #32405B;
+}
+.popubInfoItems{
+    padding: 15px;
+    background: white;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    color: #000000;
+}
+
+.popubInfoItems div{
+    margin-bottom: 15px;
+}
+
+.popubInfoItems div:last-child{
+    margin-bottom: 0;
 }

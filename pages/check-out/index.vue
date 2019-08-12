@@ -201,7 +201,7 @@
                              v-for="(item, index) in items" style="display: grid;">
                             <div class="post post-1 product-container">
                                 <div>{{index + 1}}</div>
-                                <div class="product-image"></div>
+                                <div class="product-image" :style="{backgroundImage: 'url(' + setImage(0, item) + ')'}"></div>
                             </div>
                             <div class="post post-2 product-container">
                                 <div class="item pointer all-center">
@@ -443,7 +443,8 @@
     import {base64encode} from 'nodejs-base64';
     import Validator from "../../validator/validator";
     import {Country} from "../../api/country";
-
+    import {enviroment} from "../../config";
+    import no from './../../assets/no.png'
     const action = [
         'email',
         'last_name',
@@ -455,7 +456,7 @@
         'postal_code',
         'country',
         'phone'
-    ]
+    ];
 
     export default {
         fetch({store, req}) {
@@ -570,6 +571,7 @@
                     paypal: false,
                     visa: false,
                 },
+                url: enviroment.url,
                 news: false,
                 agree: false,
                 addressSame: false,
@@ -599,6 +601,14 @@
                 }, this.dataRegister, 'postal_code');
             } catch(e){
 
+            }
+
+            if(this.arrayOfObjects.length == 0){
+                Country.getCountries()
+                    .then(res => this.$store.commit('country/setValue', {
+                        name: 'countries', data: res.body.sort((a, b) => a.name_en.localeCompare(b.name_en))
+                    }))
+                    .catch(res => console.log(res))
             }
         },
 
@@ -718,10 +728,12 @@
             },
 
             order() {
+                const shipping = !this.data.rates.some(item => item.select)
 
-                if (this.data.rates.some(item => item.select) || this.data.simple.select) {
+                if (!this.data.simple.select && shipping) {
                     return this.toStore('error', 'You don`t select shipping');
                 }
+                if(shipping && !this.data.simple.select) return this.toStore('error', 'You don`t select shipping');
 
                 if (!this.agree) return this.toStore('error', 'You don`t confirm checked');
 
@@ -856,6 +868,14 @@
                 let arr = [];
                 r.keys().forEach((key) => arr.push({url: r(key), key: key}));
                 return arr;
+            },
+
+            setImage(index, item){
+                let url;
+                try{
+                    url =  JSON.parse(item.images)[index]
+                } catch (e){}
+                return url ? this.url + 'images/parts/' + url : no;
             },
 
             save() {
@@ -1396,6 +1416,8 @@
         height: 53px;
         padding: 0 !important;
         background-image: url("./../../assets/test_cart.png");
+        background-size: contain;
+        background-position: center;
     }
 
     .product-container {

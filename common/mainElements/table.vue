@@ -27,7 +27,7 @@
                 style="display: flex;justify-content: space-between">
                 <div class="w9 nested-text" style="display: flex; justify-content: space-between">
                     Warehouse
-                    <span style="font-weight: normal">availability</span>
+                    <span style="font-weight: normal">Availability</span>
                 </div>
             </td>
             <td :style="{background: background ? background : '#F3F6F8'}"
@@ -48,7 +48,7 @@
             <td :style="{background: background ? background : '#F3F6F8'}"
                 class="w1"
                 v-if="(!from && !to) || this.position.indexOf(1) > -1">
-                <img src="./../../assets/testres.png" class="w1">
+                <img :src="setImage(0)" class="w1">
             </td>
             <td :style="{background: background ? background : '#F3F6F8'}"
                 class="w2" style="font-weight: normal"
@@ -127,6 +127,8 @@
     import {Basket} from "../../helpers/basket";
     import {mapGetters} from "vuex";
     import { base64encode } from 'nodejs-base64';
+    import {enviroment} from "../../config";
+    import no from './../../assets/no.png'
     export default {
         props: [
             'type',
@@ -139,7 +141,8 @@
             return {
                 position: null,
                 data: null,
-                BASKET: new Basket(this.$store)
+                BASKET: new Basket(this.$store),
+                url: enviroment.url
             }
         },
         watch: {
@@ -166,16 +169,37 @@
                     product && product.data && product.data.forEach(item => {
                         const regex = /\d+/g;
                         const warehouses = item.warehouses ? item.warehouses.split(' ') : [];
-                        if(!item.warehousesNumber) {
-                            item.warehousesNumber = warehouses[0] && warehouses[0].match(regex);
-                            item.warehousesNumber = !item.warehousesNumber ? 1 : item.warehousesNumber[0];
-                        }
+                        // if(!item.warehousesNumber) {
+                        //     item.warehousesNumber = warehouses[0] && warehouses[0].match(regex);
+                        //     item.warehousesNumber = !item.warehousesNumber ? 1 : item.warehousesNumber[0];
+                        // }
+
+                        item.images = product.images;
 
                         !item.warehousesDay && (item.warehousesDay = this.dataDayFormat(warehouses[1]));
-                        item.warehouses && delete item.warehouses;
                         item.active = true;
                         item.isBasket = arrayId.indexOf(item.unique_hashes) > -1;
-                        array.splice(item.warehousesNumber - 1, 1, item)
+                        if((item.warehouses &&  item.warehouses.indexOf('canada') > -1)
+                            || (item.warehouses &&  item.warehouses.indexOf('CANADA') > -1)) {
+                            item.warehousesNumber = 1;
+                            return array.splice(0,1,item);
+                        }
+                        if((item.warehouses &&  item.warehouses.indexOf('O') > -1)
+                            || (item.warehouses &&  item.warehouses.indexOf('o') > -1)) {
+                            item.warehousesNumber = 2;
+                            return array.splice(1,1,item);
+                        }
+                        if((item.warehouses &&  item.warehouses.indexOf('E') > -1)
+                            || (item.warehouses &&  item.warehouses.indexOf('e') > -1)){
+                            item.warehousesNumber = 3;
+                            return array.splice(2,1,item);
+                        }
+                        if((item.warehouses &&  item.warehouses.indexOf('usa') > -1)
+                            || (item.warehouses &&  item.warehouses.indexOf('USA') > -1)){
+                            item.warehousesNumber = 4;
+                            return array.splice(3,1,item);
+                        }
+                        // array.splice(item.warehousesNumber - 1, 1, item)
                     });
 
                     product && product.data && (product.data = array.map((item, index) => {
@@ -193,29 +217,57 @@
                             : item.qty ? item.qty : item.available > 0 ? 1 : 0;
                         return item;
                     }));
+
+                    // product && product.data && product.data.forEach((item, index) => {
+                    //     if((item.warehouses &&  item.warehouses.indexOf('canada') > -1)
+                    //         || (item.warehouses &&  item.warehouses.indexOf('CANADA') > -1)) return arr.splice(0,1,item);
+                    //     if((item.warehouses &&  item.warehouses.indexOf('O') > -1)
+                    //         || (item.warehouses &&  item.warehouses.indexOf('o') > -1)) return arr.splice(1,1,item);
+                    //     if((item.warehouses &&  item.warehouses.indexOf('E') > -1)
+                    //         || (item.warehouses &&  item.warehouses.indexOf('e') > -1)) return arr.splice(2,1,item);
+                    //     if((item.warehouses &&  item.warehouses.indexOf('usa') > -1)
+                    //         || (item.warehouses &&  item.warehouses.indexOf('USA') > -1)) return arr.splice(3,1,item);
+                    //     // return array.push(item);
+                    // });
+// debugger
+                    // product && product.data && (product.data = array);
+                    // debugger;
                     this.data = product;
                     return this.data;
                 }
             },
         },
         created() {
+
             let arr = Array.apply(null, {length: this.to - this.from}).map(Number.call, Number);
             let count = 0;
             this.position = arr.map(() => {
                 count += 1;
                 return this.from + count
             });
+
         },
         methods: {
+
             dataDayFormat(data) {
                 if(!data) return '';
-                const statics = data;
-                const regex = /\d+/g;
-                data && (data = data.match(regex));
-                data && (data = data[data.length - 1]);
-                if (data && data.indexOf(1) > -1) return `${statics} day`;
-                return `${statics} days`;
+                if(data.indexOf('canada') > -1 || data.indexOf('CANADA') > -1) return `1 day`;
+                // const statics = data;
+                // const regex = /\d+/g;
+                // data && (data = data.match(regex));
+                // data && (data = data[data.length - 1]);
+                // if (data && data.indexOf(1) > -1) return `${statics} day`;
+                return `2 - 3 weeks`;
             },
+
+            setImage(index){
+                let url;
+                try{
+                    url =  JSON.parse(this.item.images)[index]
+                } catch (e){}
+                return url ? this.url + 'images/parts/' + url : no;
+            },
+
             toggleQty(data, operation) {
                 if (!data.active)    return this.toStore('error', 'Not available warehouse');
                 if (!data.available) return this.toStore('error', 'Not available parts');
@@ -230,6 +282,7 @@
                     this.toStore('info', 'Successfully update basket');
                 }
             },
+
             toStore(type, mes) {
                 this.$store.commit('error/setValue', {
                     name: 'data',
@@ -276,9 +329,11 @@
                     .map(item => item && item.basket && item.basket.unique_hashes)
                     .filter(item => item);
             },
+
             toRouter(){
                 this.$router.push(`/products/${this.data.url}`)
             }
+
         }
     }
 </script>

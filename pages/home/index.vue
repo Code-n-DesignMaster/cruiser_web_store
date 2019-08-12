@@ -199,7 +199,10 @@
                 },1000)
             },
             getRandomParts(){
-                return Products.getRandomParts().then(res => this.items = res.body)
+                window.$nuxt.$loading.start();
+                return Products.getRandomParts().then(res => {
+                    this.items = res.body,this.setData = [],window.$nuxt.$loading.finish()
+                })
             },
             addCard(event){
                 const currentCard = this.items

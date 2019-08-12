@@ -128,7 +128,7 @@
     }
 
     .Carousel-section .carousel__item .container-slide .about-customer-container .about-customer-content .about-photo {
-        height: 67px;
+        height: 68px;
         width: 70px;
         background-repeat: no-repeat;
         background-size: contain;
@@ -689,6 +689,55 @@
 
     .select-result-simple {
         margin-bottom: 20px;
+    }
+    .paginate-container {
+        padding: 0;
+        margin: 0;
+        display: flex;
+    }
+
+    .paginate-container li{
+        list-style: none;
+        margin-right: 8px;
+    }
+    .paginate-container li:last-child{
+        margin-right: 0;
+    }
+    .paginate-container li {
+        background: rgba(255, 255, 255, 0.0001);
+        border: 1px solid #D4D7DE;
+        width: 40px;
+        height: 40px;
+    }
+
+    .paginate-container li a {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #32405B;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 20px;
+
+    }
+
+    .paginate-container li.active a {
+        background: #32405B;
+        font-weight: bold;
+        color: #FFFFFF;
+    }
+
+    .paginate-container li.disabled a, .paginate-container li:first-child a, .paginate-container li:last-child a{
+        font-weight: bold!important;
+        color: #D4D7DE!important;
+        font-size: 13px!important;
+        line-height: 20px!important;
+    }
+
+    .paginate-container li.disabled:not(.paginate-container li:first-child, .paginate-container li:last-child){
+        border: none;
     }
 </style>
 

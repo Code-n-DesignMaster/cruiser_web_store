@@ -1,6 +1,6 @@
 <template>
     <div class="account">
-        <app-left-aside></app-left-aside>
+        <!--<app-left-aside></app-left-aside>-->
         <div class="container-account">
             <div class="link">
                 <span>Home</span> /
@@ -24,7 +24,7 @@
             </div>
 
         </div>
-        <app-right-aside></app-right-aside>
+        <!--<app-right-aside></app-right-aside>-->
     </div>
 </template>
 
@@ -151,7 +151,7 @@
 <style scoped>
     .account {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         width: 100%;
     }
 

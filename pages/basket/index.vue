@@ -39,7 +39,7 @@
                      v-for="(item, index) in items" style="display: grid;">
                     <div class="post post-1 product-container">
                         <div>{{index + 1}}</div>
-                        <div class="product-image"></div>
+                        <div class="product-image" :style="{backgroundImage: 'url(' + setImage(0, item) + ')'}"></div>
                     </div>
                     <div class="post post-2 product-container">
                         <div class="item pointer all-center">
@@ -172,6 +172,9 @@
     import * as cookie from "cookie";
     import {Country} from "../../api/country";
     import {base64encode} from 'nodejs-base64';
+    import {enviroment} from "../../config";
+    import no from './../../assets/no.png'
+
     export default {
         fetch({store,req}){
 
@@ -265,6 +268,7 @@
             return {
                 BASKET: new Basket(this.$store),
                 items:[],
+                url: enviroment.url,
                 data: {
                     simple: {
                         inCanada: true,
@@ -279,7 +283,14 @@
 
 
         created(){
-            this.items = this.getItems()
+            this.items = this.getItems();
+            if(this.arrayOfObjects.length == 0){
+                Country.getCountries()
+                    .then(res => this.$store.commit('country/setValue', {
+                        name: 'countries', data: res.body.sort((a, b) => a.name_en.localeCompare(b.name_en))
+                    }))
+                    .catch(res => console.log(res))
+            }
         },
 
         mounted(){
@@ -454,7 +465,14 @@
                         this.toStore('error', 'Invalid Data');
                         window.$nuxt.$loading.finish();
                     })
-            }
+            },
+            setImage(index, item){
+                let url;
+                try{
+                    url =  JSON.parse(item.images)[index]
+                } catch (e){}
+                return url ? this.url + 'images/parts/' + url : no;
+            },
         }
     }
 </script>
@@ -866,6 +884,8 @@
         height: 53px;
         padding: 0!important;
         background-image: url("./../../assets/test_cart.png");
+        background-size: contain;
+        background-position: center;
     }
     .product-container{
         display: flex;

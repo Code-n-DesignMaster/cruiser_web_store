@@ -96,6 +96,9 @@
     margin-top: 5px;
     transition: 1s width;
 }
-.leave-message:hover > .text-leave-message{
+//.leave-message:hover > .text-leave-message{
+//    width: 120px;
+//}
+.leave-message> .text-leave-message{
     width: 120px;
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="search">
-        <app-left-aside></app-left-aside>
+        <!--<app-left-aside></app-left-aside>-->
         <div class="search-container">
             <div class="search-result-title">
                 Search result for:
@@ -42,7 +42,7 @@
                 <!--</div>-->
             </div>
         </div>
-        <app-right-aside style="align-self: flex-start;margin-top: 400px"></app-right-aside>
+        <!--<app-right-aside style="align-self: flex-start;margin-top: 400px"></app-right-aside>-->
     </div>
 </template>
 
@@ -53,6 +53,8 @@
     import table from "../../common/mainElements/table";
     import {mapGetters} from "vuex"
     import {Search} from "../../api/search";
+    import no from './../../assets/no.png'
+    import {enviroment} from "../../config";
     export default {
          async asyncData({store, query}){
              let data;
@@ -66,6 +68,7 @@
              } catch (e) {
                 data = []
              }
+             console.log(data);
              return { data: data }
         },
         components: {
@@ -75,7 +78,8 @@
         },
         data(){
             return {
-                simple: false
+                simple: false,
+                url: enviroment.url
             }
         },
         computed:{
@@ -100,7 +104,14 @@
                  }
                  this.data = data;
                  window.$nuxt.$loading.finish();
-             }
+             },
+             setImage(index){
+                 let url;
+                 try{
+                     url =  JSON.parse(this.item.images)[index]
+                 } catch (e){}
+                 return url ? this.url + 'images/parts/' + url : no;
+            },
         }
     }
 </script>
@@ -110,7 +121,7 @@
         margin-top: 33px;
         width: 100%;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
     }
 
     .search-container {

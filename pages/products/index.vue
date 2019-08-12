@@ -53,7 +53,9 @@
                         <div class="item">{{item.qty}}</div>
                     </div>
                     <div class="post post-6">
-                        <div class="item">{{item.warehouse}}</div>
+                        <div class="item">
+                            <!--{{item.warehouse}}-->
+                        </div>
                     </div>
                     <div class="post post-7 all-center">
                         <div>
@@ -127,16 +129,18 @@
         computed: {},
         methods: {
             clickCallback(pageNum) {
-                Products.getAllProducts(pageNum).then(res => (this.paginatedata = res.body, this.scrollTo('+')))
+                window.$nuxt.$loading.start();
+                Products.getAllProducts(pageNum).then(res => (this.paginatedata = res.body, this.scrollTo()))
             },
-            scrollTo:function () {
+            scrollTo() {
                 let pix = window.pageYOffset;
-                let steps = 50;
+                let steps = 70;
                 requestAnimationFrame(to);
                 function to(){
                     pix = pix - steps;
                     window.scrollTo(0,pix);
                     pix > 0 && requestAnimationFrame(to);
+                    !(pix > 0) && window.$nuxt.$loading.finish();
                 }
             },
             toOneProduct(brand_name, part_number){
@@ -280,55 +284,6 @@
         color: #FFFFFF;
     }
 
-    .paginate-container {
-        padding: 0;
-        margin: 0;
-        display: flex;
-    }
-
-    .paginate-container li{
-        list-style: none;
-        margin-right: 8px;
-    }
-    .paginate-container li:last-child{
-        margin-right: 0;
-    }
-    .paginate-container li {
-        background: rgba(255, 255, 255, 0.0001);
-        border: 1px solid #D4D7DE;
-        width: 40px;
-        height: 40px;
-    }
-
-    .paginate-container li a {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #32405B;
-        font-weight: normal;
-        font-size: 13px;
-        line-height: 20px;
-
-    }
-
-    .paginate-container li.active a {
-        background: #32405B;
-        font-weight: bold;
-        color: #FFFFFF;
-    }
-
-    .paginate-container li.disabled a, .paginate-container li:first-child a, .paginate-container li:last-child a{
-        font-weight: bold!important;
-        color: #D4D7DE!important;
-        font-size: 13px!important;
-        line-height: 20px!important;
-    }
-
-    .paginate-container li.disabled:not(.paginate-container li:first-child, .paginate-container li:last-child){
-        border: none;
-    }
     .container-paginate{
         display: flex;
         width: 100%;

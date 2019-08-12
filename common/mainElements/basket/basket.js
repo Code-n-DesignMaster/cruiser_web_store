@@ -1,6 +1,7 @@
 import {Basket} from "../../../helpers/basket";
 import {Token} from "../../../helpers/token";
-
+import {enviroment} from "../../../config";
+import no from './../../../assets/no.png'
 export default {
     name: 'basket',
     components: {},
@@ -10,7 +11,8 @@ export default {
             data: [],
             total: 0,
             BASKET: new Basket(this.$store),
-            TOKEN: new Token(this.$store)
+            TOKEN: new Token(this.$store),
+            url: enviroment.url
         }
     },
     created() {
@@ -48,6 +50,14 @@ export default {
                 this.toStore('info', 'Successfully update basket');
             }
             this.getThings()
+        },
+
+        setImage(index, item){
+            let url;
+            try{
+                url =  JSON.parse(item.images)[index]
+            } catch (e){}
+            return url ? this.url + 'images/parts/' + url : no;
         },
 
         getLocalStorageFindIndexThings (id) {

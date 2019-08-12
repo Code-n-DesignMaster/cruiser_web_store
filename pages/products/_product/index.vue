@@ -9,11 +9,11 @@
             <div class="header-container-one-product" style="justify-content: space-between;">
                 <div class="container-photo">
                     <div class="main-photo">
-                        <img src="./../../../assets/main-photo.png">
+                        <img :src="setImage(0)">
                     </div>
                     <div class="main-photo-small">
-                        <div><img src="./../../../assets/main-photo.png"></div>
-                        <div><img src="./../../../assets/main-photo.png"></div>
+                        <div><img :src="setImage(1)"></div>
+                        <div><img :src="setImage(2)"></div>
                     </div>
                 </div>
                 <div class="product-description" style="width: 100%;">
@@ -175,6 +175,8 @@
     import {Auth} from "../../../api/auth";
     import {Products} from "../../../api/products";
     import {Basket} from "../../../helpers/basket";
+    import {enviroment} from "../../../config";
+    import no from './../../../assets/no.png'
     export default {
         fetch({store,req}){
             const isHeader = req && req.headers && req.headers.cookie;
@@ -212,6 +214,7 @@
                 set_Data: [],
                 BASKET: new Basket(this.$store),
                 allProducts:[],
+                url: enviroment.url
             }
         },
         created(){
@@ -249,6 +252,7 @@
         },
 
         methods:{
+
             setHtmlCard(count){
                 return [...this.items].splice(count,4).map((item, index) => {
                     let data = {...item};
@@ -274,12 +278,22 @@
                             </div>`
                         }).join(' ')
             },
+
             refreshEvent(){
                 this.removeClick();
                 setTimeout(() => {
                     this.addClick();
                 },1000)
             },
+
+            setImage(index){
+                let url;
+                try{
+                    url =  JSON.parse(this.item.images)[index]
+                } catch (e){}
+                return url ? this.url + 'images/parts/' + url : no;
+            },
+
             addCard(event){
                 let currentCard = this.items
                     .find(data => data.unique_hash === event.target.parentNode.previousElementSibling.textContent);
