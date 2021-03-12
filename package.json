@@ -17,7 +17,7 @@
     "cookie": "^0.4.0",
     "cookie-universal-nuxt": "^2.0.16",
     "html2canvas": "^1.0.0-rc.3",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "nodejs-base64": "^1.0.3",
     "nuxt": "^2.0.0",
     "vue-dropdowns": "^1.0.6",
